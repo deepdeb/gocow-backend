@@ -4,12 +4,12 @@ exports.getProductListController = async (req, res) => {
     try {
         const resp = await getProductListService.getProductList();
         if (resp) {
-            return res.json({ success: true, status: 200, response: resp })
+            return res.json({ success: true, status: 200, products: resp })
         } else {
-            return res.json({ success: false, status: 500, message: 'Internal server error', response: [] })
+            return res.json({ success: false, status: 500, message: 'Internal server error', products: [] })
         }
     } catch (error) {
         console.log('Get product list controller error: ', error);
-        return res.json({ success: false, status: 400, message: res.message, response: []})
+        return res.json({ success: false, status: 400, message: res.message, products: []})
     }
 }
