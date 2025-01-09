@@ -13,7 +13,7 @@ exports.customerLoginController = async (req, res) => {
         console.log(`Valid customer login data`);
         const resp = await customerLoginService.customerLogin(value);
         if (resp) {
-            return res.json({ success: true, status: 200, message: 'ok', customer_id: resp[0] })
+            return res.json({ status: 200 })
         } else {
             return res.json({ success: false, status: 500, message: 'Internal server error', response: [] })
         }

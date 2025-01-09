@@ -3,7 +3,7 @@ const customerOtpVerifyService = require('../../services/customerOtpVerifyServic
 exports.customerOtpVerifyController = async (req, res) => {
     try {
         const customerOtpVerifyData = Joi.object({
-            customer_id: Joi.number().required().messages({'number.base': 'Please send valid customer_id'}),
+            phone_num: Joi.number().required().messages({'number.base': 'Please send valid phone number'}),
             otp : Joi.string().length(6).pattern(/^[0-9]+$/).required().messages({'string.pattern.base': 'Please send valid otp'})
         })
         const {error, value} = customerOtpVerifyData.validate(req.body);
