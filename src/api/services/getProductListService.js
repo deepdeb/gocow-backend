@@ -2,7 +2,7 @@ const readPool = require('../../config/mysql').readPool;
 
 exports.getProductList = async () => {
     try {
-        let sql = "select product_id, product_name, catch_phrase, product_description, price, availability, unit, package from product_list where is_deleted = 0"
+        let sql = "select product_id, product_name, catch_phrase, product_image, product_description, price, availability, unit, package from product_list where is_deleted = 0"
 
         const [resp] = await readPool.query(sql);
 
