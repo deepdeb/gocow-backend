@@ -13,11 +13,13 @@ exports.customerOtpVerifyController = async (req, res) => {
         }
         console.log(`Valid customer otp verify data`);
         const resp = await customerOtpVerifyService.customerOtpVerify(value);
-        if (resp == true) {
-            return res.json({ success: resp, status: 200 })
-        } else if(resp == false){
-            return res.json({ success: false, status: 200})
-        } else {
+        if (resp) {
+            return res.json({ success: resp[0], status: 200, customer_id: resp[1] })
+        }
+        // else if(resp){
+        //     return res.json({ success: resp[0], status: 200, customer_id: resp[1]})
+        // }
+        else {
             return res.json({ success: false, status: 500, message: 'Internal server error', response: [] })
         }
     } catch (error) {

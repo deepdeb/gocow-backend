@@ -6,9 +6,10 @@ exports.customerOtpVerify = async (data) => {
         const [resp] = await readPool.query(sql, [data.otp, data.phone_num]);
 
         if (resp.length > 0) {
-            return true
-        } else {
-            return false
+            return [true, resp[0].customer_id]
+        }
+        else {
+            return [false, '']
         }
     } catch (error) {
         console.log('Customer login service error: ', error)
