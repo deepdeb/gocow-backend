@@ -93,7 +93,7 @@ exports.createProductListController = async (req, res) => {
                     is_deleted: false,
                     unit: element.unit,
                     package: element.package,
-                    catch_phrase: element.catch_phrase,
+                    catch_phrase: element.package,
                     price: element.price
                 },
             })
