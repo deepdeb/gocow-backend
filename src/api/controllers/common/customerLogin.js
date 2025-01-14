@@ -35,13 +35,13 @@ exports.customerLoginController = async (req, res) => {
                 }
             })
             console.log('new customer insert resp>>>', new_customer_insert)
-            return res.json({ success: true, status: 200, response: new_customer_insert })
+            return res.json({ success: true, status: 200, user: new_customer_insert })
         } else {
             console.log('customer already exists>>', customer_check)
-            return res.json({ success: true, status: 200, response: customer_check })
+            return res.json({ success: true, status: 200, user: customer_check })
         }
     } catch (error) {
         console.log('Customer login controller error: ', error);
-        return res.json({ success: false, status: 400, message: res.message, response: []})
+        return res.json({ success: false, status: 400, message: res.message, user: []})
     }
 }
