@@ -1,5 +1,8 @@
 const Joi = require('joi');
-const customerLoginService = require('../../services/customerLoginService');
+const { v4: uuidv4 } = require('uuid');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
 exports.customerLoginController = async (req, res) => {
     try {
         const customerLoginData = Joi.object({
@@ -11,11 +14,31 @@ exports.customerLoginController = async (req, res) => {
             return res.status(400).json({ success: false, message: error.details[0].message.replace(/["':]/g, '') });
         }
         console.log(`Valid customer login data`);
-        const resp = await customerLoginService.customerLogin(value);
-        if (resp) {
-            return res.json({ status: 200 })
+        console.log('phone num', value.phone_num)
+
+        let customer_check = await prisma.customer.findUnique({
+            where: {
+                phone_num: value.phone_num.toString()
+            }
+        })
+
+        if(customer_check == null) {
+        const newUUID = uuidv4();
+            console.log('uuid>>>', newUUID)
+            let new_customer_insert = await prisma.customer.create({
+                data: {
+                    userUid: newUUID,
+                    phone_num: value.phone_num.toString(),
+                    customer_name: null,
+                    customer_type: null,
+                    wallet_balance: 0.00
+                }
+            })
+            console.log('new customer insert resp>>>', new_customer_insert)
+            return res.json({ success: true, status: 200, response: new_customer_insert })
         } else {
-            return res.json({ success: false, status: 500, message: 'Internal server error', response: [] })
+            console.log('customer already exists>>', customer_check)
+            return res.json({ success: true, status: 200, response: customer_check })
         }
     } catch (error) {
         console.log('Customer login controller error: ', error);

@@ -2,74 +2,75 @@
 datasource db {
     provider = "mysql"
     url = env("MYSQL_URL")
+	// shadowDatabaseUrl = env("MYSQL_SHADOW_URL")
 }
 
 generator client {
     provider = "prisma-client-js"
 }
 
-model Customer {
+model customer {
     userUid String @id
     phone_num String @unique
-    customer_name String
-    customer_type String
-    wallet_balance Decimal
+    customer_name String?
+    customer_type String?
+    wallet_balance Decimal @default(0.000)
     createdAt DateTime @default(now())
 }
 
-model Product {
+model product {
     product_id Int @id @default(autoincrement())
-    product_name String 
-    product_image String
-    availability String
-    product_description String
-    is_deleted Boolean
-    unit String
-    package String
-    catch_phrase String
-    price Decimal
+    product_name String?
+    product_image String?
+    availability String?
+    product_description String?
+    is_deleted Boolean @default(false)
+    unit String?
+    package String?
+    catch_phrase String?
+    price Decimal?
 }
 
-model Sales {
+model sales {
     sales_id Int @id @default(autoincrement())
     sale_date DateTime
     product_id Int
-    sold_price Decimal
-    sold_quantity Decimal
-    customer_id String
+    sold_price Decimal?
+    sold_quantity Decimal?
+    customer_id String?
     created_at DateTime @default(now())
 }
 
-model Offers {
+model offers {
     offer_id Int @id @default(autoincrement())
     product_id Int
-    offer_amount Decimal
-    offer_type String
-    offer_code String
-    is_active Boolean
-    is_deleted Boolean
+    offer_amount Decimal?
+    offer_type String?
+    offer_code String?
+    is_active Boolean @default(true)
+    is_deleted Boolean @default(false)
     created_at DateTime @default(now())
 }
 
-model DailyWaste {
+model dailyWaste {
     daily_waste_id Int @id @default(autoincrement())
     product_id Int
-    waste_date DateTime
-    waste_price Decimal
-    waste_quantity Decimal
-    waste_reason String
+    waste_date DateTime?
+    waste_price Decimal?
+    waste_quantity Decimal?
+    waste_reason String?
 }
 
-model DailyInventory {
+model dailyInventory {
     daily_inventory_id Int @id @default(autoincrement())
     product_id Int
-    inventory_price Decimal
-    quantity Decimal
-    date DateTime
+    inventory_price Decimal?
+    quantity Decimal?
+    date DateTime?
     created_at DateTime @default(now())
 }
 
-model Address {
+model address {
     address_id Int @id @default(autoincrement())
     flat String?
     house String?
@@ -77,6 +78,6 @@ model Address {
     locality String?
     area String?
     landmark String?
-    coordinate String
+    coordinate String?
     created_at DateTime @default(now())
 }

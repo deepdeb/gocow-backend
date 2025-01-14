@@ -6,7 +6,10 @@
     "express": "^4.21.2",
     "joi": "^17.13.3",
     "mysql2": "^3.12.0",
-    "prisma": "^6.2.1",
+    "uuid": "^11.0.5",
     "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.2.1"
   }
 }
