@@ -72,12 +72,10 @@ model dailyInventory {
 
 model address {
     address_id Int @id @default(autoincrement())
-    flat String?
-    house String?
-    apartment String?
-    locality String?
-    area String?
-    landmark String?
+    userUid String
+    flat_house_apartment String?
+    locality_area_landmark String?
     coordinate String?
+    address_type String?
     created_at DateTime @default(now())
 }
