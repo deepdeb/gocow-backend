@@ -10,7 +10,7 @@ generator client {
 }
 
 model customer {
-    userUid String @id
+    userUid String @id @unique
     phone_num String @unique
     customer_name String?
     customer_type String?
@@ -78,4 +78,5 @@ model address {
     coordinate String?
     address_type String?
     created_at DateTime @default(now())
+    @@unique([userUid, address_type])
 }

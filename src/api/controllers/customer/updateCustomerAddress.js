@@ -3,6 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 exports.updateCustomerAddressController = async (req, res) => {
+    console.log('enter')
     try {
         const updateCustomerAddressData = Joi.object({
             userUid: Joi.string().required(),
@@ -19,13 +20,24 @@ exports.updateCustomerAddressController = async (req, res) => {
         }
         console.log(`Valid update customer address data`);
 
-        const address_add = await prisma.address.create({
-            data: {
+        const address_add = await prisma.address.upsert({
+            where: {
+                userUid_address_type: {
+                  userUid: value.userUid,
+                  address_type: value.address_type,
+                },
+              },
+            create: {
                 userUid: value.userUid,
                 flat_house_apartment: value.flat_house_apartment,
                 locality_area_landmark: value.locality_area_landmark,
                 coordinate: value.coordinate,
                 address_type: value.address_type
+            },
+            update: {
+                flat_house_apartment: value.flat_house_apartment,
+                locality_area_landmark: value.locality_area_landmark,
+                coordinate: value.coordinate
             }
         })
 
