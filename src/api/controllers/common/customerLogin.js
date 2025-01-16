@@ -42,6 +42,6 @@ exports.customerLoginController = async (req, res) => {
         }
     } catch (error) {
         console.log('Customer login controller error: ', error);
-        return res.json({ success: false, status: 400, message: res.message, user: []})
+        return res.json({ success: false, status: 400, message: error, user: []})
     }
 }
