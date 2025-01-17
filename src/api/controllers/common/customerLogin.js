@@ -34,14 +34,26 @@ exports.customerLoginController = async (req, res) => {
                     wallet_balance: 0.00
                 }
             })
+
+            let new_customer_address = await prisma.address.findMany({
+                where: {
+                    userUid: new_customer_insert.userUid
+                }
+            })
             console.log('new customer insert resp>>>', new_customer_insert)
-            return res.json({ success: true, status: 200, user: new_customer_insert })
+            return res.json({ success: true, status: 200, user: new_customer_insert, address: new_customer_address })
         } else {
+            let customer_address = await prisma.address.findMany({
+                where: {
+                    userUid: customer_check.userUid
+                }
+            })
+
             console.log('customer already exists>>', customer_check)
-            return res.json({ success: true, status: 200, user: customer_check })
+            return res.json({ success: true, status: 200, user: customer_check, address: customer_address })
         }
     } catch (error) {
         console.log('Customer login controller error: ', error);
-        return res.json({ success: false, status: 400, message: error, user: []})
+        return res.json({ success: false, status: 400, message: error, user: [], address: []})
     }
 }
