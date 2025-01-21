@@ -1,7 +1,7 @@
   function ensureAuthenticated(req, res, next) {
     var admin = require("firebase-admin");
   
-    var serviceAccount = require("./../../key/gocow-aa6f1-firebase-adminsdk-f470w-d2ec712dba.json");
+    var serviceAccount = require("../../key/gocow-aa6f1-firebase-adminsdk-f470w-d2ec712dba.json");
     if (!admin.apps.length) {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
