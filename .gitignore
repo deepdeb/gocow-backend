@@ -12,3 +12,4 @@ combined.log
 /src/combined.log
 key/firebaseadminkey.json
 src/key/gocow-aa6f1-firebase-adminsdk-f470w-d2ec712dba.json
+.env
