@@ -84,6 +84,6 @@ model address {
 model cart {
     cart_id Int @id @default(autoincrement())
     userUid String @unique
-    productList Json?
+    product_list Json?
     created_at DateTime @default(now())
 }
