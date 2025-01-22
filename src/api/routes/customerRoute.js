@@ -16,14 +16,21 @@ const storage = multer.diskStorage({
     },
   });
 const upload = multer({ storage: storage })
+
+const { customerLoginController } = require('../controllers/customer/customerLogin');
 const { updateCustomerAddressController } = require('../controllers/customer/updateCustomerAddress');
 const { uploadDoorImageController } = require('../controllers/customer/uploadDoorImage');
 const { getDoorImageController } = require('../controllers/customer/getDoorImage');
-const { customerLoginController } = require('../controllers/customer/customerLogin');
+const { deleteDoorImageController } = require('../controllers/customer/deleteDoorImage');
+
 const { setCartController } = require('../controllers/customer/setCart');
 module.exports = router;
+
+router.get('/customerLogin', ensureAuthenticated, customerLoginController)
 router.post('/updateCustomerAddress', ensureAuthenticated, updateCustomerAddressController)
+
 router.post('/uploadDoorImage', ensureAuthenticated,upload.single('image'), uploadDoorImageController)
 router.get('/getDoorImage', ensureAuthenticated,getDoorImageController)
-router.get('/customerLogin', ensureAuthenticated, customerLoginController)
 router.post('/setCart', ensureAuthenticated, setCartController)
+router.get('/deleteDoorImage', ensureAuthenticated,deleteDoorImageController)
+
