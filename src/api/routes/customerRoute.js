@@ -26,4 +26,4 @@ router.post('/updateCustomerAddress', ensureAuthenticated, updateCustomerAddress
 router.post('/uploadDoorImage', ensureAuthenticated,upload.single('image'), uploadDoorImageController)
 router.get('/getDoorImage', ensureAuthenticated,getDoorImageController)
 router.get('/customerLogin', ensureAuthenticated, customerLoginController)
-router.post('/setCart', setCartController)
+router.post('/setCart', ensureAuthenticated, setCartController)
