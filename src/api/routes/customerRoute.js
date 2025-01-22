@@ -19,7 +19,7 @@ const upload = multer({ storage: storage })
 const { updateCustomerAddressController } = require('../controllers/customer/updateCustomerAddress');
 const { uploadDoorImageController } = require('../controllers/customer/uploadDoorImage');
 const { getDoorImageController } = require('../controllers/customer/getDoorImage');
-const { customerLoginController } = require('../controllers/common/customerLogin');
+const { customerLoginController } = require('../controllers/customer/customerLogin');
 module.exports = router;
 router.post('/updateCustomerAddress', ensureAuthenticated, updateCustomerAddressController)
 router.post('/uploadDoorImage', ensureAuthenticated,upload.single('image'), uploadDoorImageController)
