@@ -12,7 +12,9 @@ exports.getDoorImageController = async (req, res) => {
             if (err) {
               console.error('Error sending file:', err);
               res.status(404).json({ error: 'Image not found' });
-            }
+            }else(
+              console.log("sent image")
+            )
           });
 
     }catch(error){
