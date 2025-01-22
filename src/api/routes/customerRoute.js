@@ -20,8 +20,10 @@ const { updateCustomerAddressController } = require('../controllers/customer/upd
 const { uploadDoorImageController } = require('../controllers/customer/uploadDoorImage');
 const { getDoorImageController } = require('../controllers/customer/getDoorImage');
 const { customerLoginController } = require('../controllers/customer/customerLogin');
+const { setCartController } = require('../controllers/customer/setCart');
 module.exports = router;
 router.post('/updateCustomerAddress', ensureAuthenticated, updateCustomerAddressController)
 router.post('/uploadDoorImage', ensureAuthenticated,upload.single('image'), uploadDoorImageController)
 router.get('/getDoorImage', ensureAuthenticated,getDoorImageController)
 router.get('/customerLogin', ensureAuthenticated, customerLoginController)
+router.post('/setCart', setCartController)
