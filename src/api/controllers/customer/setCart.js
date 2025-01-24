@@ -34,26 +34,31 @@ exports.getCartController = async (req, res) => {
         })
 
         console.log(cart_get);
-        
-        cart_get.product_list.forEach(async element => {
-            var product_id = element.product_id
-            console.log(product_id);
-            console.log(element.product_id);
-            
-            try {
-                let product = await prisma.product.findUnique({
-                    where: {
-                        product_id: product_id
+        let cart = [];
+        try {
+            cart = await Promise.all(
+                cart_get.product_list.map(async (element) => {
+                    let product = await prisma.product.findUnique({
+                        where: {
+                            product_id: element.product_id,
+                        },
+                    });
+                    if (product) {
+                        product.count = element.count;
+                        return product;
                     }
+                    return null;
                 })
-                console.log('>>> product', product);
-            } catch (error) {
-                
-            }
-        });
+            );
+            cart = cart.filter((item) => item !== null);
+        } catch (error) {
+            console.log("Prisma error: ", error);
+        }
+        
+        console.log(cart);
+        return res.json({ success: true, status: 200, message: cart });
+        
 
-        console.log('>>>', cart_get)
-        res.sendStatus(200)
     } catch (error) {
         console.log('Set cart controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
