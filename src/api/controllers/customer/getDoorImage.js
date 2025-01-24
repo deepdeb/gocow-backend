@@ -6,7 +6,7 @@ exports.getDoorImageController = async (req, res) => {
         console.log(req.user)
         const imageName= req.user.user_id+"_door"+ '.' + 'jpg'
         console.log(imageName)
-        const imagePath = path.join(__dirname, "../../../../customer_uploaded_files", imageName);
+        const imagePath = path.join(__dirname, "../../../../customer_uploaded_files/customer_door/", imageName);
 
         res.sendFile(imagePath, (err) => {
             if (err) {
