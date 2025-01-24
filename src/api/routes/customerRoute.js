@@ -23,7 +23,7 @@ const { uploadDoorImageController } = require('../controllers/customer/uploadDoo
 const { getDoorImageController } = require('../controllers/customer/getDoorImage');
 const { deleteDoorImageController } = require('../controllers/customer/deleteDoorImage');
 
-const { setCartController } = require('../controllers/customer/setCart');
+const { setCartController, getCartController } = require('../controllers/customer/setCart');
 module.exports = router;
 
 router.get('/customerLogin', ensureAuthenticated, customerLoginController)
@@ -33,4 +33,5 @@ router.post('/uploadDoorImage', ensureAuthenticated,upload.single('image'), uplo
 router.get('/getDoorImage', ensureAuthenticated,getDoorImageController)
 router.post('/setCart', ensureAuthenticated, setCartController)
 router.get('/deleteDoorImage', ensureAuthenticated,deleteDoorImageController)
+router.get('/getCart', ensureAuthenticated, getCartController)
 
