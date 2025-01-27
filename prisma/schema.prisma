@@ -95,7 +95,6 @@ model user_info {
     email String
     alternate_number String
     eggetarian Boolean
-    milk_preferences String
     gender String
     family_member_count String
     weight String
