@@ -92,13 +92,11 @@ model cart {
 model user_info {
     user_info_id Int @id @default(autoincrement())
     userUid String @unique
-    email String
-    alternate_number String
-    eggetarian Boolean
-    gender String
-    family_member_count String
-    weight String
+    email String?
+    alternate_number String?
+    eggetarian Boolean?
+    gender String?
+    family_member_count String?
+    weight String?
     customer customer @relation(fields: [userUid], references: [userUid])
-    @@unique([userUid, email])
-    @@unique([userUid, alternate_number])
 }

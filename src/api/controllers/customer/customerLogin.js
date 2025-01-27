@@ -26,6 +26,19 @@ exports.customerLoginController = async (req, res) => {
                     userUid: req.user.user_id
                 }
             })
+
+            let new_user_info = await prisma.user_info.create({
+                data: {
+                    userUid: req.user.user_id,
+                    email: null,
+                    alternate_number: null,
+                    eggetarian: null,
+                    gender: null,
+                    family_member_count: null,
+                    weight: null
+                }
+            })
+            
             return res.json({ success: true, status: 200, user: new_customer_insert, address: new_customer_address })
         } else {
             let customer_address = await prisma.address.findMany({

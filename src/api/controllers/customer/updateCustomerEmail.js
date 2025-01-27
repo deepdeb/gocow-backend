@@ -3,18 +3,11 @@ const prisma = new PrismaClient();
 
 exports.updateCustomerEmailController = async (req, res) => {
     try {
-        const name_update = await prisma.user_info.upsert({
+        const name_update = await prisma.user_info.update({
             where: {
-                userUid_email: {
-                    userUid: req.user.user_id,
-                    email: req.body.email
-                }
+                userUid: req.user.user_id
             },
-            create: {
-                userUid: req.user.user_id,
-                email: req.body.email
-            },
-            update: {
+            data: {
                 email: req.body.email
             }
         })

@@ -3,18 +3,11 @@ const prisma = new PrismaClient();
 
 exports.updateCustomerAltNumController = async (req, res) => {
     try {
-        const name_update = await prisma.user_info.upsert({
+        const name_update = await prisma.user_info.update({
             where: {
-                userUid_alt_number: {
-                    userUid: req.user.user_id,
-                    alternate_number: req.body.alternate_number
-                }
+                userUid: req.user.user_id
             },
-            create: {
-                userUid: req.user.user_id,
-                alternate_number: req.body.alternate_number
-            },
-            update: {
+            data: {
                 alternate_number: req.body.alternate_number
             }
         })
