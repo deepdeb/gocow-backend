@@ -16,6 +16,7 @@ model customer {
     customer_type String?
     wallet_balance Decimal @default(0.000)
     createdAt DateTime @default(now())
+    user_info user_info? @relation
 }
 
 model product {
@@ -86,4 +87,19 @@ model cart {
     userUid String @unique
     product_list Json?
     created_at DateTime @default(now())
+}
+
+model user_info {
+    user_info_id Int @id @default(autoincrement())
+    userUid String @unique
+    email String
+    alternate_number String
+    eggetarian Boolean
+    milk_preferences String
+    gender String
+    family_member_count String
+    weight String
+    customer customer @relation(fields: [userUid], references: [userUid])
+    @@unique([userUid, email])
+    @@unique([userUid, alternate_number])
 }
