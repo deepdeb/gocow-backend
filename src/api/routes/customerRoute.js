@@ -24,6 +24,9 @@ const { getDoorImageController } = require('../controllers/customer/getDoorImage
 const { deleteDoorImageController } = require('../controllers/customer/deleteDoorImage');
 
 const { setCartController, getCartController } = require('../controllers/customer/setCart');
+const { updateCustomerNameController } = require('../controllers/customer/updateCustomerName');
+const { updateCustomerEmailController } = require('../controllers/customer/updateCustomerEmail');
+const { updateCustomerAltNumController } = require('../controllers/customer/updateCustomerAltNumber');
 module.exports = router;
 
 router.get('/customerLogin', ensureAuthenticated, customerLoginController)
@@ -34,4 +37,7 @@ router.get('/getDoorImage', ensureAuthenticated,getDoorImageController)
 router.post('/setCart', ensureAuthenticated, setCartController)
 router.get('/deleteDoorImage', ensureAuthenticated,deleteDoorImageController)
 router.get('/getCart', ensureAuthenticated, getCartController)
+router.post('/updateCustomerName', updateCustomerNameController)
+router.post('/updateCustomerEmail', updateCustomerEmailController)
+router.post('/updateCustomerAltNum', updateCustomerAltNumController)
 
