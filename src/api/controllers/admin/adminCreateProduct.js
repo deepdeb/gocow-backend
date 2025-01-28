@@ -6,7 +6,7 @@ exports.adminCreateProductController = async (req, res) => {
         let admin_create_product = await prisma.product.create({
             data: {
                 product_name: req.body.product_name,
-                product_image: req.body.product_image,
+                product_image: null,
                 product_description: req.body.product_description,
                 unit: req.body.unit,
                 package: req.body.package,
