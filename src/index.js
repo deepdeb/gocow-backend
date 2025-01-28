@@ -9,7 +9,7 @@ const { port, env } = require('./config/vars');
 
 app.listen(port, () => console.log(`server listening on port ${port} || 3000(${env})`));
 
-app.get('/test',ensureAuthenticated,async function (req, res)  {
+app.get('/test',async function (req, res)  {
     console.log('test api called');
     console.log(req.user)
     res.send('test api called');

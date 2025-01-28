@@ -100,3 +100,15 @@ model user_info {
     weight String?
     customer customer @relation(fields: [userUid], references: [userUid])
 }
+
+model admin {
+    admin_id Int @id @default(autoincrement())
+    email String @unique
+    password String
+    first_name String?
+    last_name String?
+    phone_number String?
+    status Boolean @default(true)
+    privilege String
+}
+
