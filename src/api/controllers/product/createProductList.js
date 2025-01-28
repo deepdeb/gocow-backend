@@ -1,5 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const Joi = require('joi');
 const prisma = new PrismaClient()
 exports.createProductListController = async (req, res) => {
     try {
