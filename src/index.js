@@ -11,7 +11,6 @@ app.listen(port, () => console.log(`server listening on port ${port} || 3000(${e
 
 app.get('/test',async function (req, res)  {
     console.log('test api called');
-    console.log(req.user)
     res.send('test api called');
 })
 

@@ -11,7 +11,10 @@ exports.adminCreateProductController = async (req, res) => {
                 unit: req.body.unit,
                 package: req.body.package,
                 catch_phrase: req.body.catch_phrase,
-                price: req.body.price
+                price: req.body.price,
+                updated_at: null,
+                updated_by: null,
+                created_by: req.admin.email
             }
         })
 
@@ -22,7 +25,7 @@ exports.adminCreateProductController = async (req, res) => {
     }
 }
 
-exports.adminEditProductController = async (req, res) => {
+exports.adminUpdateProductController = async (req, res) => {
     try {
         let admin_edit_product = await prisma.product.update({
             where: {
@@ -34,7 +37,9 @@ exports.adminEditProductController = async (req, res) => {
                 unit: req.body.unit,
                 package: req.body.package,
                 catch_phrase: req.body.catch_phrase,
-                price: req.body.price
+                price: req.body.price,
+                updated_by: req.admin.email,
+                updated_at: new Date().toISOString()
             }
         })
         return res.json({ success: true, status: 200, message: 'Product edited successfully' })
@@ -51,7 +56,7 @@ exports.adminDeleteProductController = async (req, res) => {
                 product_id: req.body.product_id
             },
             data: {
-                is_deleted: 1
+                is_deleted: true
             }
         })
         return res.json({ success: true, status: 200, message: 'Product deleted successfully' })

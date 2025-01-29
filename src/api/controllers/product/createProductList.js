@@ -93,7 +93,8 @@ exports.createProductListController = async (req, res) => {
                     unit: element.unit,
                     package: element.package,
                     catch_phrase: element.package,
-                    price: element.price
+                    price: element.price,
+                    created_by: "test@gmail.com"
                 },
             })
         });

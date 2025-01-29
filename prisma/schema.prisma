@@ -30,6 +30,10 @@ model product {
     package String?
     catch_phrase String?
     price Decimal?
+    created_by String @default("")
+    updated_at DateTime?
+    updated_by String?
+    created_at DateTime @default(now())
 }
 
 model sales {
