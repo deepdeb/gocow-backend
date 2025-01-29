@@ -42,6 +42,19 @@ model sales {
     created_at DateTime @default(now())
 }
 
+model orders {
+    id Int @id @default(autoincrement())
+    order_id String @unique
+    userUid String
+    product_list Json
+    order_total Decimal
+    offers Json
+    shipping_address String
+    status String
+    delivery_agent_id Int?
+    created_at DateTime @default(now())
+}
+
 model offers {
     offer_id Int @id @default(autoincrement())
     product_id Int

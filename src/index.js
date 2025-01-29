@@ -1,5 +1,5 @@
 require('dotenv').config();
-const auth  = require('./api/middleware/authMiddleware')
+const auth  = require('./api/middleware/authMiddlewareCustomer')
 
 const ensureAuthenticated = auth.ensureAuthenticated
 const app = require('./config/express');

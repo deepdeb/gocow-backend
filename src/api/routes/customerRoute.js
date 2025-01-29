@@ -1,4 +1,4 @@
-const auth  = require('../../api/middleware/authMiddleware')
+const auth  = require('../../api/middleware/authMiddlewareCustomer')
 const ensureAuthenticated = auth.ensureAuthenticated
 const router = require('express').Router();
 const multer = require('multer');
@@ -40,4 +40,5 @@ router.get('/getCart', ensureAuthenticated, getCartController)
 router.post('/updateCustomerName', ensureAuthenticated, updateCustomerNameController)
 router.post('/updateCustomerEmail', ensureAuthenticated, updateCustomerEmailController)
 router.post('/updateCustomerAltNum', ensureAuthenticated, updateCustomerAltNumController)
+
 
