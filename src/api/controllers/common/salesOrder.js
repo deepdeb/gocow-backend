@@ -45,7 +45,7 @@ exports.createOrder = async (req, res) => {
 exports.adminGetOrderList = async (req, res) => {
     try {
         let order_list = await prisma.orders.findMany({})
-        return res.json({ success: true, status: 200, response: order_list})
+        return res.json({ success: true, status: 200, orderList: order_list})
     } catch (error) {
         console.log('order list controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
@@ -73,7 +73,7 @@ exports.customerGetOrderList = async (req, res) => {
             }
         })
         const updatedOrderList = await updateOrderProducts(order_list);
-        return res.json({ success: true, status: 200, response: updatedOrderList})
+        return res.json({ success: true, status: 200, orderList: updatedOrderList})
     } catch (error) {
         console.log('order list controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
