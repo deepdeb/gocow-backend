@@ -7,7 +7,7 @@ uid.setDictionary('alpha_upper');
 exports.salesController = async (req, res) => {
     try {
         let sales = await prisma.sales.create({
-            
+
         })
     } catch (error) {
         console.log('sales controller error: ', error);
@@ -21,9 +21,11 @@ exports.createOrder = async (req, res) => {
         
         console.log(">>>>", req.body.product_list);
 
+
+
         let order = await prisma.orders.create({
            data: { order_id: order_id,
-            userUid: "req.user.user_id",
+            userUid: req.user.user_id,
             product_list: req.body.product_list,
             order_total: 3000,
             offers: { "offer" : "test"},
@@ -54,7 +56,7 @@ exports.customerGetOrderList = async (req, res) => {
     try {
         let order_list = await prisma.orders.findMany({
             where: {
-                userUid: "req.user.user_id"
+                userUid: req.user.user_id
             },
             select: {
                 order_id: true,
@@ -63,9 +65,15 @@ exports.customerGetOrderList = async (req, res) => {
                 offers: true,
                 shipping_address: true,
                 status: true,
-                delivery_agent_id: false
+                delivery_agent_id: false,
+                created_at: true
+            },
+            orderBy: {
+                id: 'asc'
             }
         })
+
+        console.log('order list', order_list)
         return res.json({ success: true, status: 200, response: order_list})
     } catch (error) {
         console.log('order list controller error: ', error);
