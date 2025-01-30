@@ -6,9 +6,9 @@ uid.setDictionary('alpha_upper');
 
 exports.salesController = async (req, res) => {
     try {
-
-
-        let sales = await prisma.sales.create
+        let sales = await prisma.sales.create({
+            
+        })
     } catch (error) {
         console.log('sales controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
