@@ -72,11 +72,49 @@ exports.customerGetOrderList = async (req, res) => {
                 id: 'asc'
             }
         })
-
-        console.log('order list', order_list)
-        return res.json({ success: true, status: 200, response: order_list})
+        const updatedOrderList = await updateOrderProducts(order_list);
+        return res.json({ success: true, status: 200, response: updatedOrderList})
     } catch (error) {
         console.log('order list controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
     }
 }
+
+
+async function updateOrderProducts(orderList) {
+    const updatedOrders = [];
+  
+    // Iterate through each order
+    for (let order of orderList) {
+      // Create an array of promises for finding products
+      const productPromises = order.product_list.map(async (product) => {
+        const productData = await prisma.product.findUnique({
+          where: { product_id: product.product_id },
+          omit: {
+            created_by: true,
+            created_at: true,
+            updated_by: true,
+            updated_at: true,
+          },
+        });
+  
+        // Return updated product data with the correct count
+        if (productData) {
+          productData.count=product.count
+          product = productData
+          return product;
+        }
+      });
+  
+      // Wait for all product queries to complete using Promise.all
+      const updatedProductList = await Promise.all(productPromises);
+  
+      // Push the updated order with the new product list
+      updatedOrders.push({
+        ...order,
+        product_list: updatedProductList,
+      });
+    }
+  
+    return updatedOrders;
+  }
