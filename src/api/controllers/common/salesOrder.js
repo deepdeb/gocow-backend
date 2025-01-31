@@ -54,8 +54,8 @@ exports.customerGetOrderList = async (req, res) => {
     try {
         let order_list = await prisma.orders.findMany({
             where: {
-                // userUid: req.user.user_id
-                userUid: 'ahsnhFMsjhhBkwdhxhXDt8Uk5Uo1'
+                userUid: req.user.user_id
+                // userUid: 'ahsnhFMsjhhBkwdhxhXDt8Uk5Uo1'
             },
             select: {
                 order_id: true,
