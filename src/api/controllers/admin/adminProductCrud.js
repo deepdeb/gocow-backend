@@ -3,21 +3,26 @@ const prisma = new PrismaClient();
 
 exports.adminCreateProductController = async (req, res) => {
     try {
+        
+        
+        let data = JSON.parse(req.body.data);
+        console.log(req.filepath)
+        
         let admin_create_product = await prisma.product.create({
             data: {
-                product_name: req.body.product_name,
-                product_image: null,
-                product_description: req.body.product_description,
-                unit: req.body.unit,
-                package: req.body.package,
-                catch_phrase: req.body.catch_phrase,
-                price: req.body.price,
+                product_name: data.product_name,
+                product_image: req.filepath,
+                product_description: data.product_description,
+                unit: data.unit,
+                package: data.package,
+                catch_phrase: data.catch_phrase,
+                price: data.price,
                 updated_at: null,
                 updated_by: null,
                 created_by: req.admin.email
             }
         })
-
+        console.log('admin_create_product', admin_create_product)
         return res.json({ success: true, status: 200, message: "Product created successfully" })
     } catch (error) {
         console.log('Admin create product controller error: ', error);

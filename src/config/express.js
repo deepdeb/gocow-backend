@@ -12,6 +12,8 @@ app.use(express.urlencoded({ extended: true }))
 
 //serve static files
 app.use(express.static(root));
+app.use('/static', express.static(path.join(__dirname, 'admin_files/product_files')))
+
 
 app.use(cors());
 
