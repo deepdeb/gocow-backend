@@ -129,3 +129,12 @@ model admin {
     privilege String
 }
 
+model delivery_person_details {
+    delivery_person_id Int @id @default(autoincrement())
+    phone_num String @unique
+    password String
+    first_name String?
+    last_name String?
+    details String?
+    createdAt DateTime @default(now())
+}
