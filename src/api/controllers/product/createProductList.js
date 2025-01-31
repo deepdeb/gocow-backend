@@ -8,7 +8,7 @@ exports.createProductListController = async (req, res) => {
                 "product_name": "Farm Fresh Milk",
                 "catch_phrase": "Freshness in every sip",
                 "product_image": "assets/images/milk_carton.png",
-                "product_description": 'null',
+                "product_description": "Pure and fresh milk sourced directly from the farm for your daily nutrition.",
                 "price": 50.00,
                 "availability": 'null',
                 "unit": "1 ltr",
@@ -19,7 +19,7 @@ exports.createProductListController = async (req, res) => {
                 "product_name": "Farm Fresh Milk",
                 "catch_phrase": "Freshness in every sip",
                 "product_image": "assets/images/milk_packet.png",
-                "product_description": 'null',
+                "product_description": "Fresh, creamy milk packed in a convenient 500 ml packet for your everyday needs.",
                 "price": 29.00,
                 "availability": 'null',
                 "unit": "500 ml",
@@ -30,7 +30,7 @@ exports.createProductListController = async (req, res) => {
                 "product_name": "Farm Fresh Milk",
                 "catch_phrase": "Freshness in every sip",
                 "product_image": "assets/images/milk_packet.png",
-                "product_description": 'null',
+                "product_description": "Compact and fresh milk in a 300 ml packet, perfect for small servings.",
                 "price": 15.00,
                 "availability": 'null',
                 "unit": "300 ml",
@@ -41,7 +41,7 @@ exports.createProductListController = async (req, res) => {
                 "product_name": "Farm Fresh Pure Ghee",
                 "catch_phrase": "Freshness in every sip",
                 "product_image": "assets/images/ghee_product.png",
-                "product_description": 'null',
+                "product_description": "Rich, aromatic pure ghee made from the best farm-fresh cream for a wholesome cooking experience.",
                 "price": 230.00,
                 "availability": 'null',
                 "unit": "500 mg",
@@ -52,7 +52,7 @@ exports.createProductListController = async (req, res) => {
                 "product_name": "Farm Fresh Pure Ghee",
                 "catch_phrase": "Freshness in every sip",
                 "product_image": "assets/images/ghee_product.png",
-                "product_description": 'null',
+                "product_description": "A smaller, 250 mg pack of our premium quality pure ghee, ideal for your everyday cooking.",
                 "price": 120.00,
                 "availability": 'null',
                 "unit": "250 mg",
@@ -63,7 +63,7 @@ exports.createProductListController = async (req, res) => {
                 "product_name": "Paneer",
                 "catch_phrase": "Freshness in every sip",
                 "product_image": "assets/images/paneer_product.png",
-                "product_description": 'null',
+                "product_description": "Soft, fresh paneer made from high-quality milk, perfect for cooking or snacking.",
                 "price": 45.00,
                 "availability": 'null',
                 "unit": "300 mg",
@@ -74,13 +74,13 @@ exports.createProductListController = async (req, res) => {
                 "product_name": "Paneer",
                 "catch_phrase": "Freshness in every sip",
                 "product_image": "assets/images/paneer_product.png",
-                "product_description": 'null',
+                "product_description": "A 200 mg pack of our fresh, soft paneer that adds a delicious touch to any meal.",
                 "price": 30.00,
                 "availability": 'null',
                 "unit": "200 mg",
                 "package": "pack"
             }
-        ];
+        ];        
 
         products.forEach(async element => {
             const newProduct = await prisma.product.create({
@@ -92,7 +92,7 @@ exports.createProductListController = async (req, res) => {
                     is_deleted: false,
                     unit: element.unit,
                     package: element.package,
-                    catch_phrase: element.package,
+                    catch_phrase: element.catch_phrase,
                     price: element.price,
                     created_by: "test@gmail.com"
                 },

@@ -7,5 +7,5 @@ module.exports = router;
 router.get('/getProductListAdmin', getProductListAdminController)
 router.post('/createOrder', ensureAuthenticated, createOrder)
 router.get('/getAdminOrderList', adminGetOrderList)
-router.get('/getCustomerOrderList', ensureAuthenticated, customerGetOrderList)
+router.get('/getCustomerOrderList', customerGetOrderList)
 router.get('/getProductListCustomer', getProductListCustomerController)

@@ -18,8 +18,6 @@ exports.salesController = async (req, res) => {
 exports.createOrder = async (req, res) => {
     try {
         const order_id = uid.rnd();
-        
-        console.log(">>>>", req.body.product_list);
 
 
 
@@ -56,7 +54,8 @@ exports.customerGetOrderList = async (req, res) => {
     try {
         let order_list = await prisma.orders.findMany({
             where: {
-                userUid: req.user.user_id
+                // userUid: req.user.user_id
+                userUid: 'ahsnhFMsjhhBkwdhxhXDt8Uk5Uo1'
             },
             select: {
                 order_id: true,
@@ -83,11 +82,13 @@ exports.customerGetOrderList = async (req, res) => {
 
 async function updateOrderProducts(orderList) {
     const updatedOrders = [];
-  
     // Iterate through each order
     for (let order of orderList) {
+    var total = 0
+
       // Create an array of promises for finding products
       const productPromises = order.product_list.map(async (product) => {
+
         const productData = await prisma.product.findUnique({
           where: { product_id: product.product_id },
           omit: {
@@ -100,6 +101,8 @@ async function updateOrderProducts(orderList) {
   
         // Return updated product data with the correct count
         if (productData) {
+            total = total + product.count * productData.price
+            order.total = total
           productData.count=product.count
           product = productData
           return product;
