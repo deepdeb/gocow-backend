@@ -23,7 +23,7 @@ exports.adminCreateProductController = async (req, res) => {
             }
         })
         console.log('admin_create_product', admin_create_product)
-        return res.json({ success: true, status: 200, message: "Product created successfully" })
+        return res.json({ success: true, status: 200, message: "Product created successfully",filePath:req.filepath })
     } catch (error) {
         console.log('Admin create product controller error: ', error);
         return res.json({ success: false, status: 400, message: error})

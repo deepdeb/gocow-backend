@@ -20,7 +20,7 @@ const product_image_storage = multer.diskStorage({
       const uniqueSuffix = uid.rnd();
       const ext = path.extname(file.originalname);
       cb(null, uniqueSuffix +"_productImage"+ '.' + 'jpg');
-      req.filepath = uniqueSuffix +"_productImage"+ '.' + 'jpg'
+      req.filepath = "http://localhost:3000/"+uniqueSuffix +"_productImage"+ '.' + 'jpg'
     },
   });
 const product_image_upload = multer({ storage: product_image_storage })
