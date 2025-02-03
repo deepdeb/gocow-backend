@@ -4,6 +4,7 @@ const router = require('express').Router();
 const { adminLoginController } = require('../controllers/admin/adminLogin');
 const { adminCreateProductController, adminUpdateProductController, adminDeleteProductController } = require('../controllers/admin/adminProductCrud');
 const { deliveryPersonLoginController } = require('../controllers/admin/deliveryPersonLogin');
+const { adminReadCustomer } = require('../controllers/admin/customerManager');
 const authenticateToken = require('../middleware/authenticateTokenAdmin')
 const multer = require('multer');
 const path = require('path')
@@ -30,3 +31,4 @@ router.post('/adminCreateProduct', authenticateToken, product_image_upload.singl
 router.post('/adminUpdateProduct', authenticateToken, adminUpdateProductController)
 router.post('/adminDeleteProduct', authenticateToken, adminDeleteProductController)
 router.post('/deliveryPersonLogin', deliveryPersonLoginController)
+router.get('/getCustomerList',authenticateToken,adminReadCustomer)
