@@ -18,14 +18,33 @@ exports.salesController = async (req, res) => {
 exports.createOrder = async (req, res) => {
     try {
         const order_id = uid.rnd();
+        let cart = [];
+        let total=0
+        cart = await Promise.all(
+            req.body.product_list.map(async (element) => {
 
-
+                let product = await prisma.product.findUnique({
+                    where: {
+                        product_id: element.product_id,
+                    },
+                });
+                if (product) {
+                    product.count = element.count;
+                    console.log(product)
+                    total = total+product.price*element.count
+                    console.log(total)
+                    return product;
+                }
+                return null;
+            })
+        );
+        
 
         let order = await prisma.orders.create({
            data: { order_id: order_id,
             userUid: req.user.user_id,
-            product_list: req.body.product_list,
-            order_total: 3000,
+            product_list: cart,
+            order_total: total,
             offers: { "offer" : "test"},
             shipping_address : req.body.shipping_address,
             status : "pending",
