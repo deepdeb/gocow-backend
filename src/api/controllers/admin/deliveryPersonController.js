@@ -28,3 +28,14 @@ exports.deliveryPersonLoginController = async (req, res) => {
         return res.json({ success: false, status: 400, message: error})
     }
 }
+
+
+exports.deliveryPersonList = async (req, res) => {
+    try{
+        let delivery_person_list = await prisma.delivery_person_details.findMany({})
+        return res.json({ success: true, status:200, list:delivery_person_list})
+    }catch(error){
+        console.log('delivery person list controller error: ', error);
+        return res.json({ success: false, status: 400, message: error})
+    }
+}

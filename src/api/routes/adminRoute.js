@@ -3,7 +3,7 @@ const ensureAuthenticated = auth.ensureAuthenticated
 const router = require('express').Router();
 const { adminLoginController } = require('../controllers/admin/adminLogin');
 const { adminCreateProductController, adminUpdateProductController, adminDeleteProductController } = require('../controllers/admin/adminProductCrud');
-const { deliveryPersonLoginController } = require('../controllers/admin/deliveryPersonLogin');
+const { deliveryPersonLoginController,deliveryPersonList } = require('../controllers/admin/deliveryPersonController');
 const { adminReadCustomer } = require('../controllers/admin/customerManager');
 const authenticateToken = require('../middleware/authenticateTokenAdmin')
 const multer = require('multer');
@@ -32,3 +32,5 @@ router.post('/adminUpdateProduct', authenticateToken, adminUpdateProductControll
 router.post('/adminDeleteProduct', authenticateToken, adminDeleteProductController)
 router.post('/deliveryPersonLogin', deliveryPersonLoginController)
 router.get('/getCustomerList',authenticateToken,adminReadCustomer)
+router.get('/getDeliveryPersonList',authenticateToken,deliveryPersonList)
+
