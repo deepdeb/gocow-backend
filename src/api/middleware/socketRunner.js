@@ -26,9 +26,8 @@ async function execute(io){
         
         socket.on('locationData', async (receivedData) => {
           console.log(receivedData)
-          receiverId=userSocketMap.get(receivedData.receiver)
-          console.log(receiverId)
-          io.to(receiverId).emit('my broadcast' , {sender:receivedData.sender,lat:receivedData.latlng.lat,lng:receivedData.latlng.lng});
+          receiverId=userSocketMap.get("1")
+          io.to(receiverId).emit('my broadcast' , {sender:receivedData.sender,lat:receivedData.latlng.lat,lng:receivedData.latlng.lng, heading:receivedData.heading});
         });
       });       
 }
