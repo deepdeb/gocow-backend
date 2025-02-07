@@ -19,7 +19,7 @@ const authenticateTokenDelivery = (req, res, next) => {
             return res.status(401).json({ message: err });
         }
 
-        req.admin = decoded;
+        req.deliveryMan = decoded;
         next();
     });
 };

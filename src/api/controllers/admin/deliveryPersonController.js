@@ -39,3 +39,17 @@ exports.deliveryPersonList = async (req, res) => {
         return res.json({ success: false, status: 400, message: error})
     }
 }
+
+exports.getDeliverablelistByid = async (req, res) => {
+    try{
+        let deli_list = await prisma.orders.findMany({
+            where:{
+                delivery_person_id:req.deliveryMan.id
+            }
+        })
+        return res.json({ success: true, status:200, list:deli_list})
+    }catch(error){
+        console.log('delivery person list controller error: ', error);
+        return res.json({ success: false, status: 400, message: error})
+    }
+}

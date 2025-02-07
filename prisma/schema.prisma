@@ -53,7 +53,7 @@ model orders {
     product_list Json
     order_total Decimal
     offers Json
-    shipping_address String
+    shipping_address Json
     status String
     delivery_agent_id Int?
     created_at DateTime @default(now())
