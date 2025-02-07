@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const authHelpers = require('../../utils/authHelpers');
+const { customerGetOrderList } = require('../common/salesOrder');
 
 exports.deliveryPersonLoginController = async (req, res) => {
     try {
@@ -45,9 +46,20 @@ exports.getDeliverablelistByid = async (req, res) => {
         let deli_list = await prisma.orders.findMany({
             where:{
                 delivery_person_id:req.deliveryMan.id
+            },
+            omit:{
+                id:true,
+                userUid:true,
+            },
+            include:{
+                customer:{
+                    select:{
+                        customer_name:true
+                    }
+                }
             }
         })
-        return res.json({ success: true, status:200, list:deli_list})
+        return res.json({ success: true, status:200, orderList:deli_list})
     }catch(error){
         console.log('delivery person list controller error: ', error);
         return res.json({ success: false, status: 400, message: error})

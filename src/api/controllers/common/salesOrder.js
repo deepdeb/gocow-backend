@@ -27,6 +27,12 @@ exports.createOrder = async (req, res) => {
                     where: {
                         product_id: element.product_id,
                     },
+                    omit:{
+                        created_by: true,
+                        created_at: true,
+                        updated_by: true,
+                        updated_at: true,
+                    }
                 });
                 if (product) {
                     product.count = element.count;

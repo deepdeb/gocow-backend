@@ -15,6 +15,7 @@ model customer {
     customer_name String?
     customer_type String?
     wallet_balance Decimal @default(0.000)
+    orders orders[]
     createdAt DateTime @default(now())
     user_info user_info? @relation
 }
@@ -56,6 +57,7 @@ model orders {
     shipping_address Json
     status String
     delivery_agent_id Int?
+    customer          customer @relation(fields: [userUid], references: [userUid])
     created_at DateTime @default(now())
 }
 
