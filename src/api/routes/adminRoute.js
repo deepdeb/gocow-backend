@@ -20,14 +20,14 @@ const product_image_storage = multer.diskStorage({
       const uniqueSuffix = uid.rnd();
       const ext = path.extname(file.originalname);
       cb(null, uniqueSuffix +"_productImage"+ '.' + 'jpg');
-      req.filepath = "http://localhost:3000/"+uniqueSuffix +"_productImage"+ '.' + 'jpg'
+      req.filepath = uniqueSuffix +"_productImage"+ '.' + 'jpg'
     },
   });
 const product_image_upload = multer({ storage: product_image_storage })
 module.exports = router;
 router.post('/adminLogin', adminLoginController)
 router.post('/adminCreateProduct', authenticateToken, product_image_upload.single("image"), adminCreateProductController)
-router.post('/adminUpdateProduct', authenticateToken, adminUpdateProductController)
+router.post('/adminUpdateProduct', authenticateToken, product_image_upload.single("image"), adminUpdateProductController)
 router.post('/adminDeleteProduct', authenticateToken, adminDeleteProductController)
 router.get('/getCustomerList',authenticateToken,adminReadCustomer)
 router.get('/getDeliveryPersonList',authenticateToken,deliveryPersonList)
