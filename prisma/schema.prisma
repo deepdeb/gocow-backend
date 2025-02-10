@@ -1,142 +1,144 @@
-
 datasource db {
-    provider = "mysql"
-    url = env("MYSQL_URL")
-	shadowDatabaseUrl = env("MYSQL_SHADOW_URL")
+  provider          = "mysql"
+  url               = env("MYSQL_URL")
+  shadowDatabaseUrl = env("MYSQL_SHADOW_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model customer {
-    userUid String @id @unique
-    phone_num String @unique
-    customer_name String?
-    customer_type String?
-    wallet_balance Decimal @default(0.000)
-    orders orders[]
-    createdAt DateTime @default(now())
-    user_info user_info? @relation
+  userUid        String     @id @unique
+  phone_num      String     @unique
+  customer_name  String?
+  customer_type  String?
+  wallet_balance Decimal    @default(0.000)
+  orders         orders[]
+  createdAt      DateTime   @default(now())
+  user_info      user_info? @relation
 }
 
 model product {
-    product_id Int @id @default(autoincrement())
-    product_name String?
-    product_image String?
-    availability String?
-    product_description String?
-    is_deleted Boolean @default(false)
-    unit String?
-    package String?
-    catch_phrase String?
-    price Decimal?
-    created_by String @default("")
-    updated_at DateTime?
-    updated_by String?
-    created_at DateTime @default(now())
+  product_id          Int       @id @default(autoincrement())
+  product_name        String?
+  product_image       String?
+  availability        String?
+  product_description String?
+  is_deleted          Boolean   @default(false)
+  unit                String?
+  package             String?
+  catch_phrase        String?
+  price               Decimal?
+  created_by          String    @default("")
+  updated_at          DateTime?
+  updated_by          String?
+  created_at          DateTime  @default(now())
 }
 
 model sales {
-    sales_id Int @id @default(autoincrement())
-    sale_date DateTime
-    product_id Int
-    sold_price Decimal?
-    sold_quantity Decimal?
-    customer_id String?
-    created_at DateTime @default(now())
+  sales_id      Int      @id @default(autoincrement())
+  sale_date     DateTime
+  product_id    Int
+  sold_price    Decimal?
+  sold_quantity Decimal?
+  customer_id   String?
+  created_at    DateTime @default(now())
 }
 
 model orders {
-    id Int @id @default(autoincrement())
-    order_id String @unique
-    userUid String
-    product_list Json
-    order_total Decimal
-    offers Json
-    shipping_address Json
-    status String
-    delivery_agent_id Int?
-    customer          customer @relation(fields: [userUid], references: [userUid])
-    created_at DateTime @default(now())
+  id                                        Int                     @id @default(autoincrement())
+  order_id                                  String                  @unique
+  userUid                                   String
+  product_list                              Json
+  order_total                               Decimal
+  offers                                    Json
+  shipping_address                          Json
+  status                                    String
+  delivery_agent_id                         Int
+  customer                                  customer                @relation(fields: [userUid], references: [userUid])
+  delivery_person_details                   delivery_person_details @relation(references: [delivery_person_id], fields: [delivery_agent_id])
+  created_at                                DateTime                @default(now())
 }
 
 model offers {
-    offer_id Int @id @default(autoincrement())
-    product_id Int
-    offer_amount Decimal?
-    offer_type String?
-    offer_code String?
-    is_active Boolean @default(true)
-    is_deleted Boolean @default(false)
-    created_at DateTime @default(now())
+  offer_id     Int      @id @default(autoincrement())
+  product_id   Int
+  offer_amount Decimal?
+  offer_type   String?
+  offer_code   String?
+  is_active    Boolean  @default(true)
+  is_deleted   Boolean  @default(false)
+  created_at   DateTime @default(now())
 }
 
 model dailyWaste {
-    daily_waste_id Int @id @default(autoincrement())
-    product_id Int
-    waste_date DateTime?
-    waste_price Decimal?
-    waste_quantity Decimal?
-    waste_reason String?
+  daily_waste_id Int       @id @default(autoincrement())
+  product_id     Int
+  waste_date     DateTime?
+  waste_price    Decimal?
+  waste_quantity Decimal?
+  waste_reason   String?
 }
 
 model dailyInventory {
-    daily_inventory_id Int @id @default(autoincrement())
-    product_id Int
-    inventory_price Decimal?
-    quantity Decimal?
-    date DateTime?
-    created_at DateTime @default(now())
+  daily_inventory_id Int       @id @default(autoincrement())
+  product_id         Int
+  inventory_price    Decimal?
+  quantity           Decimal?
+  date               DateTime?
+  created_at         DateTime  @default(now())
 }
 
 model address {
-    address_id Int @id @default(autoincrement())
-    userUid String
-    flat_house_apartment String?
-    locality_area_landmark String?
-    coordinate String?
-    address_type String?
-    created_at DateTime @default(now())
-    @@unique([userUid, address_type])
+  address_id             Int      @id @default(autoincrement())
+  userUid                String
+  flat_house_apartment   String?
+  locality_area_landmark String?
+  coordinate             String?
+  address_type           String?
+  created_at             DateTime @default(now())
+
+  @@unique([userUid, address_type])
 }
 
 model cart {
-    cart_id Int @id @default(autoincrement())
-    userUid String @unique
-    product_list Json?
-    created_at DateTime @default(now())
+  cart_id      Int      @id @default(autoincrement())
+  userUid      String   @unique
+  product_list Json?
+  created_at   DateTime @default(now())
 }
 
 model user_info {
-    user_info_id Int @id @default(autoincrement())
-    userUid String @unique
-    email String?
-    alternate_number String?
-    eggetarian Boolean?
-    gender String?
-    family_member_count String?
-    weight String?
-    customer customer @relation(fields: [userUid], references: [userUid])
+  user_info_id        Int      @id @default(autoincrement())
+  userUid             String   @unique
+  email               String?
+  alternate_number    String?
+  eggetarian          Boolean?
+  gender              String?
+  family_member_count String?
+  weight              String?
+  customer            customer @relation(fields: [userUid], references: [userUid])
 }
 
 model admin {
-    admin_id Int @id @default(autoincrement())
-    email String @unique
-    password String
-    first_name String?
-    last_name String?
-    phone_number String?
-    status Boolean @default(true)
-    privilege String
+  admin_id     Int     @id @default(autoincrement())
+  email        String  @unique
+  password     String
+  first_name   String?
+  last_name    String?
+  phone_number String?
+  status       Boolean @default(true)
+  privilege    String
 }
 
 model delivery_person_details {
-    delivery_person_id Int @id @default(autoincrement())
-    phone_num String @unique
-    password String
-    first_name String?
-    last_name String?
-    details String?
-    createdAt DateTime @default(now())
+  delivery_person_id Int      @id @default(autoincrement())
+  phone_num          String   @unique
+  password           String
+  first_name         String?
+  last_name          String?
+  details            String?
+  orders orders[]
+  createdAt          DateTime @default(now())
 }
