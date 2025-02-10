@@ -2,7 +2,7 @@ const auth  = require('../../api/middleware/authMiddlewareCustomer')
 const router = require('express').Router();
 const { adminLoginController } = require('../controllers/admin/adminLogin');
 const { adminCreateProductController, adminUpdateProductController, adminDeleteProductController } = require('../controllers/admin/adminProductCrud');
-const {deliveryPersonList } = require('../controllers/admin/deliveryPersonController');
+const {deliveryPersonList, assignDeliveryPerson } = require('../controllers/admin/deliveryPersonController');
 const { adminReadCustomer } = require('../controllers/admin/customerManager');
 const authenticateToken = require('../middleware/authenticateTokenAdmin')
 const multer = require('multer');
@@ -31,4 +31,5 @@ router.post('/adminUpdateProduct', authenticateToken, product_image_upload.singl
 router.post('/adminDeleteProduct', authenticateToken, adminDeleteProductController)
 router.get('/getCustomerList',authenticateToken,adminReadCustomer)
 router.get('/getDeliveryPersonList',authenticateToken,deliveryPersonList)
+router.post('/assignDeliveryPerson', authenticateToken, assignDeliveryPerson)
 

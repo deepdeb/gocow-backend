@@ -20,6 +20,7 @@ const authenticateTokenDelivery = (req, res, next) => {
         }
 
         req.deliveryMan = decoded;
+        // console.log('decoded>>>', decoded);
         next();
     });
 };

@@ -45,7 +45,7 @@ exports.getDeliverablelistByid = async (req, res) => {
     try{
         let deli_list = await prisma.orders.findMany({
             where:{
-                delivery_person_id:req.deliveryMan.id
+                delivery_agent_id:req.deliveryMan.id
             },
             omit:{
                 id:true,
@@ -62,6 +62,25 @@ exports.getDeliverablelistByid = async (req, res) => {
         return res.json({ success: true, status:200, orderList:deli_list})
     }catch(error){
         console.log('delivery person list controller error: ', error);
+        return res.json({ success: false, status: 400, message: error})
+    }
+}
+
+exports.assignDeliveryPerson = async (req, res) => {
+    try {
+        // console.log('req body>>>', req.body)
+        let assign_deli = await prisma.orders.update({
+            where: {
+                order_id: req.body.order_id
+            },
+            data: {
+                delivery_agent_id: req.body.delivery_person_id,
+                status: 'confirmed'
+            }
+        })
+        return res.json({ success: true, status:200, message: 'Delivery assigned successfully'})
+    } catch (error) {
+        console.log('assign delivery person controller error: ', error);
         return res.json({ success: false, status: 400, message: error})
     }
 }
