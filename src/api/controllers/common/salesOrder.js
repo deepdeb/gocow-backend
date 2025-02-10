@@ -19,7 +19,7 @@ exports.createOrder = async (req, res) => {
     try {
         const order_id = uid.rnd();
         let cart = [];
-        let total=0
+        let total = 0
         cart = await Promise.all(
             req.body.product_list.map(async (element) => {
 
@@ -27,7 +27,7 @@ exports.createOrder = async (req, res) => {
                     where: {
                         product_id: element.product_id,
                     },
-                    omit:{
+                    omit: {
                         created_by: true,
                         created_at: true,
                         updated_by: true,
@@ -37,27 +37,29 @@ exports.createOrder = async (req, res) => {
                 if (product) {
                     product.count = element.count;
                     console.log(product)
-                    total = total+product.price*element.count
+                    total = total + product.price * element.count
                     console.log(total)
                     return product;
                 }
                 return null;
             })
         );
-        
+
 
         let order = await prisma.orders.create({
-           data: { order_id: order_id,
-            userUid: req.user.user_id,
-            product_list: cart,
-            order_total: total,
-            offers: { "offer" : "test"},
-            shipping_address : req.body.shipping_address,
-            status : "pending",
-            delivery_agent_id: 1}
+            data: {
+                order_id: order_id,
+                userUid: req.user.user_id,
+                product_list: cart,
+                order_total: total,
+                offers: { "offer": "test" },
+                shipping_address: req.body.shipping_address,
+                status: "pending",
+                delivery_agent_id: 1
+            }
         })
 
-        return res.json({ success: true, status: 200, message: "Order created"})
+        return res.json({ success: true, status: 200, message: "Order created" })
 
     } catch (error) {
         console.log('order controller error: ', error);
@@ -67,8 +69,18 @@ exports.createOrder = async (req, res) => {
 
 exports.adminGetOrderList = async (req, res) => {
     try {
-        let order_list = await prisma.orders.findMany({})
-        return res.json({ success: true, status: 200, orderList: order_list})
+        let order_list = await prisma.orders.findMany({
+            include: {
+                delivery_person_details: {
+                    select: {
+                        phone_num: true,
+                        first_name: true,
+                        last_name: true,
+                    }
+                }
+            },
+        })
+        return res.json({ success: true, status: 200, orderList: order_list })
     } catch (error) {
         console.log('order list controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
@@ -96,7 +108,7 @@ exports.customerGetOrderList = async (req, res) => {
                 id: 'asc'
             }
         })
-        return res.json({ success: true, status: 200, orderList: order_list})
+        return res.json({ success: true, status: 200, orderList: order_list })
     } catch (error) {
         console.log('order list controller error: ', error);
         return res.json({ success: false, status: 400, message: error })

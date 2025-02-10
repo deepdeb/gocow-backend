@@ -5,64 +5,72 @@ const { customerGetOrderList } = require('../common/salesOrder');
 
 exports.deliveryPersonLoginController = async (req, res) => {
     try {
-        console.log('>>>>',req.body)
+        console.log('>>>>', req.body)
         let delivery_check = await prisma.delivery_person_details.findUnique({
             where: {
                 phone_num: req.body.phone_number.toString()
             }
         })
         console.log(delivery_check);
-        if(delivery_check != null){
+        if (delivery_check != null) {
 
             const access_token = await authHelpers.generateDeliveryAccessToken(delivery_check)
 
-            if(delivery_check.password === req.body.password) {
-                return res.json({ success: true, status: 200, message: "Login successful", response: {"id": delivery_check.delivery_person_id, "first_name": delivery_check.first_name, "last_name": delivery_check.last_name, "access_token": access_token }})
+            if (delivery_check.password === req.body.password) {
+                return res.json({ success: true, status: 200, message: "Login successful", response: { "id": delivery_check.delivery_person_id, "first_name": delivery_check.first_name, "last_name": delivery_check.last_name, "access_token": access_token } })
             } else {
-                return res.json({ success: false, status: 420, message: "Incorrect credential"})
+                return res.json({ success: false, status: 420, message: "Incorrect credential" })
             }
         } else {
-            return res.json({ success: false, status: 420, message: "Incorrect credential"})
+            return res.json({ success: false, status: 420, message: "Incorrect credential" })
         }
     } catch (error) {
         console.log('Admin login controller error: ', error);
-        return res.json({ success: false, status: 400, message: error})
+        return res.json({ success: false, status: 400, message: error })
     }
 }
 
 
 exports.deliveryPersonList = async (req, res) => {
-    try{
+    try {
         let delivery_person_list = await prisma.delivery_person_details.findMany({})
-        return res.json({ success: true, status:200, list:delivery_person_list})
-    }catch(error){
+        return res.json({ success: true, status: 200, list: delivery_person_list })
+    } catch (error) {
         console.log('delivery person list controller error: ', error);
-        return res.json({ success: false, status: 400, message: error})
+        return res.json({ success: false, status: 400, message: error })
     }
 }
 
 exports.getDeliverablelistByid = async (req, res) => {
-    try{
+    try {
         let deli_list = await prisma.orders.findMany({
-            where:{
-                delivery_agent_id:req.deliveryMan.id
+            where: {
+                delivery_agent_id: req.deliveryMan.id,
+                OR: [
+                    {
+                        status: 'pending'
+                    },
+                    {
+                        status: 'confirmed'
+                    }
+                ]
             },
-            omit:{
-                id:true,
-                userUid:true,
+            omit: {
+                id: true,
+                userUid: true,
             },
-            include:{
-                customer:{
-                    select:{
-                        customer_name:true
+            include: {
+                customer: {
+                    select: {
+                        customer_name: true
                     }
                 }
             }
         })
-        return res.json({ success: true, status:200, orderList:deli_list})
-    }catch(error){
+        return res.json({ success: true, status: 200, orderList: deli_list })
+    } catch (error) {
         console.log('delivery person list controller error: ', error);
-        return res.json({ success: false, status: 400, message: error})
+        return res.json({ success: false, status: 400, message: error })
     }
 }
 
@@ -78,40 +86,62 @@ exports.assignDeliveryPerson = async (req, res) => {
                 status: 'confirmed'
             }
         })
-        return res.json({ success: true, status:200, message: 'Delivery assigned successfully'})
+        return res.json({ success: true, status: 200, message: 'Delivery assigned successfully' })
     } catch (error) {
         console.log('assign delivery person controller error: ', error);
-        return res.json({ success: false, status: 400, message: error})
+        return res.json({ success: false, status: 400, message: error })
     }
 }
 
 const path = require('path')
 
 exports.getDoorImageForDelivery = async (req, res) => {
-    try{
+    try {
         let customer = await prisma.orders.findUnique({
-            where:{
+            where: {
                 order_id: req.body.order_id
-            },select:{
-                userUid:true
+            }, select: {
+                userUid: true
             }
         })
         console.log(customer)
-        const imageName= customer.userUid+"_door"+ '.' + 'jpg'
+        const imageName = customer.userUid + "_door" + '.' + 'jpg'
         console.log(imageName)
         const imagePath = path.join(__dirname, "../../../../customer_uploaded_files/customer_door/", imageName);
 
         res.sendFile(imagePath, (err) => {
             if (err) {
-              console.error('Error sending file:', err);
-              res.status(404).json({ error: 'Image not found' });
-            }else(
-              console.log("sent image")
+                console.error('Error sending file:', err);
+                res.status(404).json({ error: 'Image not found' });
+            } else (
+                console.log("sent image")
             )
         });
 
-    }catch(error){
-        return res.json({ success: false, status: 400, message: error})
+    } catch (error) {
+        return res.json({ success: false, status: 400, message: error })
     }
-    
+
+}
+
+exports.addDeliveryPerson = async (req, res) => {
+    try {
+        console.log('req body>>>', req.body);
+
+        let addDeliveryPerson = await prisma.delivery_person_details.create({
+            data: {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                phone_num: req.body.phone_num,
+                password: req.body.password,
+                details: req.body.details
+            }
+        })
+
+        return res.json({ success: true, status: 200, message: 'Delivery person added successfully' })
+
+    } catch (error) {
+        console.log('add delivery person controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
 }
