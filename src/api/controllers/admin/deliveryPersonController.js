@@ -91,7 +91,7 @@ exports.getDoorImageForDelivery = async (req, res) => {
     try{
         let customer = await prisma.orders.findUnique({
             where:{
-                order_id:"MXDKHKQRJO"
+                order_id: req.body.order_id
             },select:{
                 userUid:true
             }
