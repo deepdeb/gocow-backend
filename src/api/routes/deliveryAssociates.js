@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const authenticateDeliveryToken = require('./../middleware/authenticateTokenDelivery')
-const { deliveryPersonLoginController,getDeliverablelistByid  } = require('./../controllers/admin/deliveryPersonController')
+const { deliveryPersonLoginController,getDeliverablelistByid,getDoorImageForDelivery  } = require('./../controllers/admin/deliveryPersonController')
 
 
 
@@ -9,4 +9,5 @@ const { deliveryPersonLoginController,getDeliverablelistByid  } = require('./../
 
 router.post('/deliveryPersonLogin', deliveryPersonLoginController)
 router.get('/getDeliverableListByid',authenticateDeliveryToken,getDeliverablelistByid)
+router.post('/getDoorImage',authenticateDeliveryToken,getDoorImageForDelivery)
 module.exports = router;

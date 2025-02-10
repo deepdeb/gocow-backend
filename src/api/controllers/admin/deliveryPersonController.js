@@ -84,3 +84,34 @@ exports.assignDeliveryPerson = async (req, res) => {
         return res.json({ success: false, status: 400, message: error})
     }
 }
+
+const path = require('path')
+
+exports.getDoorImageForDelivery = async (req, res) => {
+    try{
+        let customer = await prisma.orders.findUnique({
+            where:{
+                order_id:"MXDKHKQRJO"
+            },select:{
+                userUid:true
+            }
+        })
+        console.log(customer)
+        const imageName= customer.userUid+"_door"+ '.' + 'jpg'
+        console.log(imageName)
+        const imagePath = path.join(__dirname, "../../../../customer_uploaded_files/customer_door/", imageName);
+
+        res.sendFile(imagePath, (err) => {
+            if (err) {
+              console.error('Error sending file:', err);
+              res.status(404).json({ error: 'Image not found' });
+            }else(
+              console.log("sent image")
+            )
+        });
+
+    }catch(error){
+        return res.json({ success: false, status: 400, message: error})
+    }
+    
+}
