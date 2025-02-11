@@ -18,7 +18,7 @@ exports.deliveryPersonLoginController = async (req, res) => {
 
             const access_token = await authHelpers.generateDeliveryAccessToken(delivery_check)
 
-            if (delivery_check.password === req.body.password) {
+            if (delivery_check.active && delivery_check.password === req.body.password ) {
                 delivery_check.password = null
                 delivery_check.access_token = access_token
                 return res.json({ success: true, status: 200, message: "Login successful", deliveryPerson: delivery_check })

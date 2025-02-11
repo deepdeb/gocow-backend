@@ -146,6 +146,7 @@ model delivery_person_details {
   driving_license    String?
   photo              String?
   vehicle_image      String?
+  active             Boolean  @default(true)
   orders             orders[]
   createdAt          DateTime @default(now())
 }
