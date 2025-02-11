@@ -23,7 +23,25 @@ const product_image_storage = multer.diskStorage({
       req.filepath = uniqueSuffix +"_productImage"+ '.' + 'jpg'
     },
   });
+
+const delivery_image_storage = multer.diskStorage({
+
+  destination: (req, file, cb) => { 
+    const uploadPath = path.join(__dirname, "../../../admin_files/delivery_images");
+    cb(null, uploadPath); 
+
+  },
+  filename: (req, file, cb) => {
+    // Generate a new file name
+    const uniqueSuffix = uid.rnd();
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix +"_deliveryImage"+ '.' + 'jpg');
+  },
+})
+
 const product_image_upload = multer({ storage: product_image_storage })
+const delivery_image_upload = multer({ storage: delivery_image_storage })
+
 module.exports = router;
 router.post('/adminLogin', adminLoginController)
 router.post('/adminCreateProduct', authenticateToken, product_image_upload.single("image"), adminCreateProductController)
@@ -32,5 +50,5 @@ router.post('/adminDeleteProduct', authenticateToken, adminDeleteProductControll
 router.get('/getCustomerList',authenticateToken,adminReadCustomer)
 router.get('/getDeliveryPersonList',authenticateToken,deliveryPersonList)
 router.post('/assignDeliveryPerson', authenticateToken, assignDeliveryPerson)
-router.post('/addDeliveryPerson', authenticateToken, addDeliveryPerson)
+router.post('/addDeliveryPerson', authenticateToken, delivery_image_upload.array("image", 5), addDeliveryPerson)
 

@@ -126,15 +126,46 @@ exports.getDoorImageForDelivery = async (req, res) => {
 
 exports.addDeliveryPerson = async (req, res) => {
     try {
-        console.log('req body>>>', req.body);
+
+        console.log('req', req.files)
+        var aadhar
+        var photo
+        var vehicleImage
+        var pan
+        var driving_license
+        req.files.forEach(element => {
+            let namewithoutextention = element.originalname.match(/^([^.]+)/)[1];
+            if (namewithoutextention == 'adhar-pic') {
+                aadhar = element.filename;
+            } else if (namewithoutextention == 'profile-pic') {
+                photo = element.filename;
+            } else if (namewithoutextention == 'vehicle-pic') {
+                vehicleImage = element.filename;
+            } else if (namewithoutextention == 'pan-pic') {
+                pan = element.filename;
+            } else if (namewithoutextention == 'driving-pic') {
+                driving_license = element.filename;
+            }
+        });
+
+
+        var data = JSON.parse(req.body.data)
+
+        console.log('data', data)
 
         let addDeliveryPerson = await prisma.delivery_person_details.create({
             data: {
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                phone_num: req.body.phone_num,
-                password: req.body.password,
-                details: req.body.details
+                first_name: data.first_name,
+                last_name: data.last_name,
+                phone_num: data.phone_num,
+                password: data.password,
+                details: data.details,
+                vehicle_number: data.vehicle_number,
+                aadhar: aadhar,
+                driving_license: driving_license,
+                pan: pan,
+                vehicle_image: vehicleImage,
+                photo: photo
             }
         })
 

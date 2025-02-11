@@ -47,18 +47,18 @@ model sales {
 }
 
 model orders {
-  id                                        Int                     @id @default(autoincrement())
-  order_id                                  String                  @unique
-  userUid                                   String
-  product_list                              Json
-  order_total                               Decimal
-  offers                                    Json
-  shipping_address                          Json
-  status                                    String
-  delivery_agent_id                         Int
-  customer                                  customer                @relation(fields: [userUid], references: [userUid])
-  delivery_person_details                   delivery_person_details @relation(references: [delivery_person_id], fields: [delivery_agent_id])
-  created_at                                DateTime                @default(now())
+  id                      Int                     @id @default(autoincrement())
+  order_id                String                  @unique
+  userUid                 String
+  product_list            Json
+  order_total             Decimal
+  offers                  Json
+  shipping_address        Json
+  status                  String
+  delivery_agent_id       Int
+  customer                customer                @relation(fields: [userUid], references: [userUid])
+  delivery_person_details delivery_person_details @relation(references: [delivery_person_id], fields: [delivery_agent_id])
+  created_at              DateTime                @default(now())
 }
 
 model offers {
@@ -139,6 +139,12 @@ model delivery_person_details {
   first_name         String?
   last_name          String?
   details            String?
-  orders orders[]
+  vehicle_number     String?
+  aadhar             String?
+  pan                String?
+  driving_license    String?
+  photo              String?
+  vehicle_image      String?
+  orders             orders[]
   createdAt          DateTime @default(now())
 }
