@@ -239,6 +239,8 @@ exports.updateDeliveryPerson = async (req, res) => {
                 }
             })
 
+            console.log('new data>>>>', updateDeliveryPerson)
+
             var imagePath = path.join(__dirname, "../../../../admin_files/delivery_images/");
 
             var aadharImage = previous_data.aadhar
@@ -262,10 +264,11 @@ exports.updateDeliveryPerson = async (req, res) => {
             if (vehicleImage) {
                 fs.unlinkSync(imagePath + vehicleImg)
             }
+
+            return res.json({ success: true, status: 200, message: 'Delivery person updated successfully', data: updateDeliveryPerson })
         }
 
-        return res.json({ success: true, status: 200, message: 'Delivery person updated successfully' })
-
+        return res.json({ success: false, status: 404, message: 'Data not found' })
     }
     catch (error) {
         console.log('update delivery person controller error: ', error);
