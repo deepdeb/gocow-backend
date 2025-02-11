@@ -1,7 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const fs = require('fs');
-const { dirname } = require('path');
 const path = require('path')
 
 exports.adminCreateProductController = async (req, res) => {
