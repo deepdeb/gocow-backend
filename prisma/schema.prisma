@@ -122,14 +122,15 @@ model user_info {
 }
 
 model admin {
-  admin_id     Int     @id @default(autoincrement())
-  email        String  @unique
+  admin_id     Int           @id @unique @default(autoincrement())
+  email        String        @unique
   password     String
   first_name   String?
   last_name    String?
   phone_number String?
-  status       Boolean @default(true)
+  status       Boolean       @default(true)
   privilege    String
+  active_area  active_area[] @relation
 }
 
 model delivery_person_details {
@@ -147,4 +148,14 @@ model delivery_person_details {
   vehicle_image      String?
   orders             orders[]
   createdAt          DateTime @default(now())
+}
+
+model active_area {
+  active_area_id Int      @id @default(autoincrement())
+  locality_name  String
+  pincode        String   @unique
+  added_by       Int
+  active         Boolean  @default(true)
+  admin          admin    @relation(fields: [added_by], references: [admin_id])
+  createdAt      DateTime @default(now())
 }
