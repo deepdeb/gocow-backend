@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const authenticateDeliveryToken = require('./../middleware/authenticateTokenDelivery')
-const { deliveryPersonLoginController,getDeliverablelistByid,getDoorImageForDelivery  } = require('./../controllers/admin/deliveryPersonController')
+const { deliveryPersonLoginController,getDeliverablelistByid,getDoorImageForDelivery} = require('./../controllers/admin/deliveryPersonController')
 
 
 

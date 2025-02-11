@@ -275,3 +275,20 @@ exports.updateDeliveryPerson = async (req, res) => {
         return res.json({ success: false, status: 400, message: error })
     }
 }
+
+exports.toggleDeliveryPersonStatus = async (req, res) => {
+    try {
+        console.log(req.body)
+        let activeAreas = await prisma.delivery_person_details.update({
+            where:{
+                delivery_person_id:req.body.item_id
+            },data:{
+                active:req.body.newStatus
+            }
+        })
+        return res.json({ success: true, status: 200,message: "DeliveryPerson active status changed successfully" })
+    } catch (error) {
+        console.log('Admin get active area controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
+}

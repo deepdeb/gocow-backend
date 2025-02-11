@@ -2,7 +2,7 @@ const auth  = require('../../api/middleware/authMiddlewareCustomer')
 const router = require('express').Router();
 const { adminLoginController } = require('../controllers/admin/adminLogin');
 const { adminCreateProductController, adminUpdateProductController, adminDeleteProductController } = require('../controllers/admin/adminProductCrud');
-const {deliveryPersonList, assignDeliveryPerson, addDeliveryPerson, updateDeliveryPerson } = require('../controllers/admin/deliveryPersonController');
+const {deliveryPersonList, assignDeliveryPerson, addDeliveryPerson, updateDeliveryPerson,toggleDeliveryPersonStatus } = require('../controllers/admin/deliveryPersonController');
 const { adminReadCustomer } = require('../controllers/admin/customerManager');
 const { adminAddActiveArea, getActiveArea, toggleActiveArea } = require('../controllers/admin/areaManager');
 const authenticateToken = require('../middleware/authenticateTokenAdmin')
@@ -56,5 +56,7 @@ router.post('/updateDeliveryPerson', authenticateToken, delivery_image_upload.ar
 router.post('/addActiveArea', authenticateToken, adminAddActiveArea)
 router.get('/getActiveAreaList', authenticateToken, getActiveArea)
 router.post('/toggleActiveArea', authenticateToken, toggleActiveArea)
+router.post('/toggleDeliveryPersonActiveStatus', authenticateToken, toggleDeliveryPersonStatus)
+
 
 
