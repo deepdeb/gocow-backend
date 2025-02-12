@@ -5,6 +5,7 @@ const path = require('path');
 const root = path.join(__dirname, '../../public');
 const product_images=path.join(__dirname,'../../admin_files/product_images')
 const delivery_images=path.join(__dirname,'./../../admin_files/delivery_images')
+const reports=path.join(__dirname,'./../../admin_files/reports')
 const app = express();
 
 //parse incoming data in the request body
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(root));
 app.use(express.static(product_images))
 app.use(express.static(delivery_images))
+app.use(express.static(reports))
 
 
 app.use(cors());
