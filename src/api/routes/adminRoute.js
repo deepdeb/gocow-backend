@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { adminLoginController } = require('../controllers/admin/adminLogin');
 const { adminCreateProductController, adminUpdateProductController, adminDeleteProductController, generateProductReport } = require('../controllers/admin/adminProductCrud');
 const {deliveryPersonList, assignDeliveryPerson, addDeliveryPerson, updateDeliveryPerson,toggleDeliveryPersonStatus } = require('../controllers/admin/deliveryPersonController');
-const { adminReadCustomer } = require('../controllers/admin/customerManager');
+const { adminReadCustomer, generateCustomerReport } = require('../controllers/admin/customerManager');
 const { adminAddActiveArea, getActiveArea, toggleActiveArea } = require('../controllers/admin/areaManager');
 const { generateOrderReport } = require('../controllers/common/salesOrder');
 const authenticateToken = require('../middleware/authenticateTokenAdmin')
@@ -60,6 +60,7 @@ router.post('/toggleActiveArea', authenticateToken, toggleActiveArea)
 router.post('/toggleDeliveryPersonActiveStatus', authenticateToken, toggleDeliveryPersonStatus)
 router.get('/generateOrderReport', generateOrderReport)
 router.get('/generateProductReport', generateProductReport)
+router.get('/generateCustomerReport', generateCustomerReport)
 
 
 
