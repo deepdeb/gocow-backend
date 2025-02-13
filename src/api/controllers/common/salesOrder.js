@@ -79,6 +79,14 @@ exports.adminGetOrderList = async (req, res) => {
                         first_name: true,
                         last_name: true,
                     }
+                },
+                customer: {
+                    select: {
+                        userUid: true,
+                        customer_name: true,
+                        customer_type: true,
+                        phone_num: true
+                    }
                 }
             },
         })
@@ -141,6 +149,81 @@ exports.generateOrderReport = async (req, res) => {
 
     } catch (error) {
         console.log('generate order report controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
+}
+
+exports.adminSearchOrder = async (req, res) => {
+    try {
+        console.log('req body>>>', req.body)
+        console.log('from data>>>>', req.body.from_date)
+        console.log('to date>>>>', req.body.to_date)
+        console.log('search keyword>>>>', req.body.search_keyword)
+
+        let whereCondition = {
+            OR: [
+                {
+                    customer: {
+                        customer_name: {
+                            contains: req.body.search_keyword
+                        }
+                    }
+                },
+                {
+                    customer: {
+                        userUid: {
+                            contains: req.body.search_keyword
+                        }
+                    }
+                },
+                {
+                    status: {
+                        contains: req.body.search_keyword
+                    }
+                },
+                {
+                    order_id: {
+                        contains: req.body.search_keyword
+                    }
+                }
+            ]
+        };
+
+        if (req.body.to_date && req.body.from_date) {
+            whereCondition.AND = [
+                {
+                    created_at: {
+                        lte: new Date(req.body.to_date).toISOString(),
+                        gte: new Date(req.body.from_date).toISOString()
+                    }
+                }
+            ];
+        }
+
+        let order_list = await prisma.orders.findMany({
+            include: {
+                delivery_person_details: {
+                    select: {
+                        phone_num: true,
+                        first_name: true,
+                        last_name: true,
+                    }
+                },
+                customer: {
+                    select: {
+                        userUid: true,
+                        customer_name: true,
+                        customer_type: true,
+                        phone_num: true
+                    }
+                }
+            },
+            where: whereCondition
+        })
+
+        return res.json({ success: true, status: 200, orderList: order_list })
+    } catch (error) {
+        console.log('search order by date controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
     }
 }

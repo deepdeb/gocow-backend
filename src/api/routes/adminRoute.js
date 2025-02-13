@@ -2,10 +2,10 @@ const auth  = require('../../api/middleware/authMiddlewareCustomer')
 const router = require('express').Router();
 const { adminLoginController } = require('../controllers/admin/adminLogin');
 const { adminCreateProductController, adminUpdateProductController, adminDeleteProductController, generateProductReport } = require('../controllers/admin/adminProductCrud');
-const {deliveryPersonList, assignDeliveryPerson, addDeliveryPerson, updateDeliveryPerson,toggleDeliveryPersonStatus } = require('../controllers/admin/deliveryPersonController');
-const { adminReadCustomer, generateCustomerReport } = require('../controllers/admin/customerManager');
+const {deliveryPersonList, assignDeliveryPerson, addDeliveryPerson, updateDeliveryPerson,toggleDeliveryPersonStatus, searchDeliveryPerson } = require('../controllers/admin/deliveryPersonController');
+const { adminReadCustomer, generateCustomerReport, searchCustomer } = require('../controllers/admin/customerManager');
 const { adminAddActiveArea, getActiveArea, toggleActiveArea } = require('../controllers/admin/areaManager');
-const { generateOrderReport } = require('../controllers/common/salesOrder');
+const { generateOrderReport, adminSearchOrder } = require('../controllers/common/salesOrder');
 const authenticateToken = require('../middleware/authenticateTokenAdmin')
 const multer = require('multer');
 const path = require('path')
@@ -61,7 +61,7 @@ router.post('/toggleDeliveryPersonActiveStatus', authenticateToken, toggleDelive
 router.get('/generateOrderReport', generateOrderReport)
 router.get('/generateProductReport', generateProductReport)
 router.get('/generateCustomerReport', generateCustomerReport)
-
-
-
-
+router.post('/searchDeliveryPerson', searchDeliveryPerson)
+router.post('/searchCustomer', searchCustomer)
+// router.post('/searchOrder', adminSearchOrder)
+router.post('/searchOrder', adminSearchOrder)

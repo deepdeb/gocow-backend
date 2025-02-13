@@ -7,18 +7,18 @@ const path = require('path')
 
 exports.deliveryPersonLoginController = async (req, res) => {
     try {
-        console.log('>>>>', req.body)
+        // console.log('>>>>', req.body)
         let delivery_check = await prisma.delivery_person_details.findUnique({
             where: {
                 phone_num: req.body.phone_number.toString()
             }
         })
-        console.log(delivery_check);
+        // console.log(delivery_check);
         if (delivery_check != null) {
 
             const access_token = await authHelpers.generateDeliveryAccessToken(delivery_check)
 
-            if (delivery_check.active && delivery_check.password === req.body.password ) {
+            if (delivery_check.active && delivery_check.password === req.body.password) {
                 delivery_check.password = null
                 delivery_check.access_token = access_token
                 return res.json({ success: true, status: 200, message: "Login successful", deliveryPerson: delivery_check })
@@ -108,7 +108,7 @@ exports.getDoorImageForDelivery = async (req, res) => {
         })
         console.log(customer)
         const imageName = customer.userUid + "_door" + '.' + 'jpg'
-        console.log(imageName)
+        // console.log(imageName)
         const imagePath = path.join(__dirname, "../../../../customer_uploaded_files/customer_door/", imageName);
 
         res.sendFile(imagePath, (err) => {
@@ -129,7 +129,7 @@ exports.getDoorImageForDelivery = async (req, res) => {
 exports.addDeliveryPerson = async (req, res) => {
     try {
 
-        console.log('req', req.files)
+        // console.log('req', req.files)
         var aadhar
         var photo
         var vehicleImage
@@ -153,7 +153,7 @@ exports.addDeliveryPerson = async (req, res) => {
 
         var data = JSON.parse(req.body.data)
 
-        console.log('data', data)
+        // console.log('data', data)
 
         let addDeliveryPerson = await prisma.delivery_person_details.create({
             data: {
@@ -182,7 +182,7 @@ exports.addDeliveryPerson = async (req, res) => {
 exports.updateDeliveryPerson = async (req, res) => {
     try {
 
-        console.log('req files>>>>', req.files)
+        // console.log('req files>>>>', req.files)
 
         var aadhar
         var photo
@@ -207,9 +207,9 @@ exports.updateDeliveryPerson = async (req, res) => {
 
         var data = JSON.parse(req.body.data);
 
-        console.log('req.body.data>>>>>>', req.body.data)
+        // console.log('req.body.data>>>>>>', req.body.data)
 
-        console.log('data>>>>', data)
+        // console.log('data>>>>', data)
 
         let previous_data = await prisma.delivery_person_details.findFirst({
             where: {
@@ -217,7 +217,7 @@ exports.updateDeliveryPerson = async (req, res) => {
             }
         })
 
-        console.log('previous data>>>', previous_data)
+        // console.log('previous data>>>', previous_data)
 
         if (previous_data) {
             let updateDeliveryPerson = await prisma.delivery_person_details.update({
@@ -239,7 +239,7 @@ exports.updateDeliveryPerson = async (req, res) => {
                 }
             })
 
-            console.log('new data>>>>', updateDeliveryPerson)
+            // console.log('new data>>>>', updateDeliveryPerson)
 
             var imagePath = path.join(__dirname, "../../../../admin_files/delivery_images/");
 
@@ -278,17 +278,38 @@ exports.updateDeliveryPerson = async (req, res) => {
 
 exports.toggleDeliveryPersonStatus = async (req, res) => {
     try {
-        console.log(req.body)
+        // console.log(req.body)
         let activeAreas = await prisma.delivery_person_details.update({
-            where:{
-                delivery_person_id:req.body.item_id
-            },data:{
-                active:req.body.newStatus
+            where: {
+                delivery_person_id: req.body.item_id
+            }, data: {
+                active: req.body.newStatus
             }
         })
-        return res.json({ success: true, status: 200,message: "DeliveryPerson active status changed successfully" })
+        return res.json({ success: true, status: 200, message: "DeliveryPerson active status changed successfully" })
     } catch (error) {
         console.log('Admin get active area controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
+}
+
+exports.searchDeliveryPerson = async (req, res) => {
+    try {
+        // console.log('search keyword>>>>>', req.body.search_keyword)
+
+        let delivery_person_list = await prisma.delivery_person_details.findMany({
+            where: {
+                first_name: {
+                    contains: req.body.search_keyword
+                }
+            }
+        })
+
+        // console.log('delivery person list>>>>', delivery_person_list)
+
+        return res.json({ success: true, status: 200, list: delivery_person_list })
+    } catch (error) {
+        console.log('Search delivery person controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
     }
 }

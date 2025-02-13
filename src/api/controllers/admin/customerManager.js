@@ -4,16 +4,16 @@ const path = require('path')
 const xlsx = require('xlsx')
 
 exports.adminReadCustomer = async (req, res) => {
-    try{
+    try {
         let customer_list = await prisma.customer.findMany({
             orderBy: {
                 createdAt: 'desc'
             }
         })
-        return res.json({ success: true, status: 200 ,customerList:customer_list })
-    }catch(error){
+        return res.json({ success: true, status: 200, customerList: customer_list })
+    } catch (error) {
         console.log('Customer table read error ', error);
-        return res.json({ success: false, status: 400, message: error})
+        return res.json({ success: false, status: 400, message: error })
     }
 }
 
@@ -23,7 +23,7 @@ exports.generateCustomerReport = async (req, res) => {
 
         console.log('customer list>>>>', customer_list)
 
-        if(customer_list) {
+        if (customer_list) {
             console.log('enter if customer list')
             const excelFilePath = path.join(__dirname, '../../../../admin_files/reports/', 'customer_table.xlsx')
             await exportToExcel(customer_list, excelFilePath)
@@ -32,6 +32,24 @@ exports.generateCustomerReport = async (req, res) => {
         return res.json({ success: true, status: 200 })
     } catch (error) {
         console.log('Generate customer report controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
+}
+
+exports.searchCustomer = async (req, res) => {
+    try {
+        console.log('search keyword', req.body.search_keyword)
+
+        let customer_list = await prisma.customer.findMany({
+            where: {
+                customer_name: {
+                    contains: req.body.search_keyword
+                }
+            }
+        })
+        return res.json({ success: true, status: 200, list: customer_list })
+    } catch (error) {
+        console.log('admin search customer controller error ', error);
         return res.json({ success: false, status: 400, message: error })
     }
 }

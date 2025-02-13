@@ -10,12 +10,12 @@ const http = require('http').createServer(app);
 
 const io = require('socket.io')(http, {
     cors: {
-      origins: ['http://localhost:4200']
+      origins: ['*']
     }
   });
 // app.listen(port, 192.168.1.6, () => console.log(`server listening on port ${port} || 3000(${env})`));
 socketRunner.execute(io)
-http.listen(5000, () => console.log(`Listening on port ${3000}`));
+http.listen(5000, () => console.log(`Listening on port ${5000}`));
 app.listen(port, () => console.log(`server listening on port ${port} || 3000(${env})`));
 app.set('socketIo',io)
 app.get('/test',async function (req, res)  {
