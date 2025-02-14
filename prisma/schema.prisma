@@ -159,9 +159,10 @@ model offer {
   admin_id       Int            // Foreign key referencing admin table
   admin          admin          @relation(fields: [admin_id], references: [admin_id], onDelete: Cascade)
 
+  offer_label    String
   type           String      // "GLOBAL" or "PRODUCT"
-  category       String     // "BUY_N_GET_X" or "DISCOUNT"
-  discount_type  String    // "PERCENTAGE" or "FLAT", only applicable for discounts
+  category       String?     // "BUY_N_GET_X" or "DISCOUNT"
+  discount_type  String?    // "PERCENTAGE" or "FLAT", only applicable for discounts
 
   from_date      DateTime
   to_date        DateTime
