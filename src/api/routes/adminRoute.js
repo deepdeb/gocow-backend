@@ -10,6 +10,7 @@ const authenticateToken = require('../middleware/authenticateTokenAdmin')
 const multer = require('multer');
 const path = require('path')
 const ShortUniqueId = require('short-unique-id');
+const { adminCreateOffer } = require('../controllers/admin/offerManager');
 const uid = new ShortUniqueId({ length: 10 })
 uid.setDictionary('alpha_upper');
 const product_image_storage = multer.diskStorage({
@@ -65,3 +66,4 @@ router.post('/searchDeliveryPerson', searchDeliveryPerson)
 router.post('/searchCustomer', searchCustomer)
 router.post('/searchOrder', adminSearchOrder)
 router.post('/setOrderStatus', setOrderStatus)
+router.post('/createOffer', adminCreateOffer)
