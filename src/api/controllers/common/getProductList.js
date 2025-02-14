@@ -29,6 +29,12 @@ exports.getProductListCustomerController = async (req, res) => {
 exports.getProductListAdminWithSearch = async (req, res) => {
     try {
 
+        const allProducts = await prisma.product.findMany();
+
+        const priceInStrings = allProducts.map(product => product.price.toString());
+
+        const pricesMatchingReqPrice = priceInStrings.filter(price => price.includes(req.body.search_keyword));
+
         let productList = await prisma.product.findMany({
             where: {
                 OR: [
@@ -39,7 +45,7 @@ exports.getProductListAdminWithSearch = async (req, res) => {
                     },
                     {
                         price: {
-                            in: (await prisma.product.findMany()).map(product => product.price.toString()).filter(price => price.includes(req.body.search_keyword))
+                            in: pricesMatchingReqPrice
                         }
                     }
                 ]

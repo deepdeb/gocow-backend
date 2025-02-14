@@ -155,10 +155,10 @@ exports.generateOrderReport = async (req, res) => {
 
 exports.adminSearchOrder = async (req, res) => {
     try {
-        console.log('req body>>>', req.body)
-        console.log('from data>>>>', req.body.from_date)
-        console.log('to date>>>>', req.body.to_date)
-        console.log('search keyword>>>>', req.body.search_keyword)
+        // console.log('req body>>>', req.body)
+        // console.log('from data>>>>', req.body.from_date)
+        // console.log('to date>>>>', req.body.to_date)
+        // console.log('search keyword>>>>', req.body.search_keyword)
 
         let whereCondition = {
             OR: [
@@ -224,6 +224,27 @@ exports.adminSearchOrder = async (req, res) => {
         return res.json({ success: true, status: 200, orderList: order_list })
     } catch (error) {
         console.log('search order by date controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
+}
+
+exports.setOrderStatus = async (req, res) => {
+    try {
+        // console.log('req body>>>', req.body)
+        // console.log('req status>>>', req.body.status)
+        // console.log('req id>>>', req.body.order_id)
+
+        let setOrderStatus = await prisma.orders.update({
+            where: {
+                order_id: req.body.order_id
+            },
+            data: {
+                status: req.body.status
+            }
+        })
+        return res.json({ success: true, status: 200, message: 'Order updated successfully' })
+    } catch (error) {
+        console.log('set order status controller error: ', error);
         return res.json({ success: false, status: 400, message: error })
     }
 }
