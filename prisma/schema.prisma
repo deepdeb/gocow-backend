@@ -34,6 +34,8 @@ model product {
   updated_at          DateTime?
   updated_by          String?
   created_at          DateTime  @default(now())
+
+  offer_product offer_product[]
 }
 
 model sales {
@@ -59,17 +61,6 @@ model orders {
   customer                customer                @relation(fields: [userUid], references: [userUid])
   delivery_person_details delivery_person_details @relation(references: [delivery_person_id], fields: [delivery_agent_id])
   created_at              DateTime                @default(now())
-}
-
-model offers {
-  offer_id     Int      @id @default(autoincrement())
-  product_id   Int
-  offer_amount Decimal?
-  offer_type   String?
-  offer_code   String?
-  is_active    Boolean  @default(true)
-  is_deleted   Boolean  @default(false)
-  created_at   DateTime @default(now())
 }
 
 model dailyWaste {
@@ -131,6 +122,8 @@ model admin {
   status       Boolean       @default(true)
   privilege    String
   active_area  active_area[] @relation
+
+  offer offer[]
 }
 
 model delivery_person_details {
@@ -159,4 +152,37 @@ model active_area {
   active         Boolean  @default(true)
   admin          admin    @relation(fields: [added_by], references: [admin_id])
   createdAt      DateTime @default(now())
+}
+
+model offer {
+  offer_id       Int            @id @default(autoincrement())  
+  admin_id       Int            // Foreign key referencing admin table
+  admin          admin          @relation(fields: [admin_id], references: [admin_id], onDelete: Cascade)
+
+  type           String      // "GLOBAL" or "PRODUCT"
+  category       String     // "BUY_N_GET_X" or "DISCOUNT"
+  discount_type  String    // "PERCENTAGE" or "FLAT", only applicable for discounts
+
+  from_date      DateTime
+  to_date        DateTime
+  is_active      Boolean        @default(true)
+
+  buy_quantity   Int?           // Used for "BUY_N_GET_X"
+  get_quantity   Int?           // Used for "BUY_N_GET_X"
+  discount_value Decimal?       // Used for discount amount or percentage
+
+  created_at     DateTime       @default(now())
+  updated_at     DateTime?      @updatedAt
+
+  // Relation to products (for product-specific offers)
+  offer_products offer_product[]
+
+}
+
+model offer_product {
+  id          Int     @id @default(autoincrement())  
+  offer_id    Int
+  offer       offer   @relation(fields: [offer_id], references: [offer_id], onDelete: Cascade)
+  product_id  Int
+  product     product @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
 }
