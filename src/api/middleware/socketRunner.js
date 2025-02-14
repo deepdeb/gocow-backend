@@ -24,6 +24,10 @@ async function execute(io) {
       });
       socket.on('disconnect', async () => {
         console.log('user disconnected with soc id: ' + socket.id);
+          var usrId = socketUserMap.get(socket.id)
+          //maintaining the maps
+          socketUserMap.delete(socket.id)
+          userSocketMap.delete(usrId)
       });
 
       socket.on('locationData', async (receivedData) => {
@@ -37,5 +41,4 @@ async function execute(io) {
   }
 
 }
-
 module.exports = { execute }
