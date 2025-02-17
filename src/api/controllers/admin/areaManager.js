@@ -65,7 +65,7 @@ exports.toggleActiveArea = async (req, res) => {
 
 exports.updateLocality = async (req, res) => {
     try {
-        console.log('req body>>>>', req.body)
+        // console.log('req body>>>>', req.body)
 
         let updateLocality = await prisma.active_area.update({
             where: {
