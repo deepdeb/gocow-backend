@@ -18,7 +18,7 @@ exports.adminCreateOffer = async (req, res) => {
                 get_quantity: req.body.offerCategory === "BUY_N_GET_X" ? req.body.get_quantity : undefined,
                 from_date: req.body.startDate,
                 to_date: req.body.endDate,
-                offer_products: req.body.type === "PRODUCT" && req.body.product_ids.length > 0 ? {
+                offer_products: req.body.offerType === "PRODUCT" && req.body.product_ids.length > 0 ? {
                     create: req.body.product_ids.map(product_id => ({ product: { connect: { product_id } } }))
                 } : undefined,
 
