@@ -62,3 +62,24 @@ exports.toggleActiveArea = async (req, res) => {
         return res.json({ success: false, status: 400, message: error })
     }
 }
+
+exports.updateLocality = async (req, res) => {
+    try {
+        console.log('req body>>>>', req.body)
+
+        let updateLocality = await prisma.active_area.update({
+            where: {
+                active_area_id: req.body.area_id,
+            },
+            data: {
+                locality_name: req.body.locality_name,
+                pincode: req.body.pincode.toString()
+            }
+        })
+
+        return res.json({ success: true, status: 200, message: 'area updated successfully'})
+    } catch (error) {
+        console.log('Admin update active area controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
+}
