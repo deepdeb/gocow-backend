@@ -38,7 +38,11 @@ exports.adminAddActiveArea = async (req, res) => {
 
 exports.getActiveArea = async (req, res) => {
     try {
-        let activeAreas = await prisma.active_area.findMany({})
+        let activeAreas = await prisma.active_area.findMany({
+            include: {
+                admin: true
+            }
+        })
         return res.json({ success: true, status: 200, data: activeAreas })
     } catch (error) {
         console.log('Admin get active area controller error: ', error);
