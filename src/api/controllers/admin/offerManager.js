@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 exports.adminCreateOffer = async (req, res) => {
     try {
 
-        // console.log('req body>>>>', req.body)
+        console.log('req body>>>>', req.body)
 
         let admin_create_offer = await prisma.offer.create({
             data: {
@@ -53,7 +53,7 @@ exports.adminGetOffer = async (req, res) => {
 
 exports.adminUpdateOffer = async (req, res) => {
     try {
-        console.log('req body>>>', req.body)
+        //console.log('req body>>>', req.body)
 
         let admin_update_offer = await prisma.offer.update({
             where: {
@@ -69,20 +69,19 @@ exports.adminUpdateOffer = async (req, res) => {
                 get_quantity: req.body.offerCategory === "BUY_N_GET_X" ? req.body.get_quantity : undefined,
                 from_date: req.body.startDate ? req.body.startDate : undefined,
                 to_date: req.body.endDate ? req.body.endDate : undefined,
-                offer_products: req.body.type === "PRODUCT" && req.body.product_ids && req.body.product_ids.length > 0
+                offer_products: req.body.offerType === "PRODUCT" && req.body.product_ids && req.body.product_ids.length > 0
                     ? {
-                        update: req.body.product_ids.map(product_id => ({
-                            where: { offer_id_product_id: { offer_id: req.body.offer_id, product_id } }, // Assuming a composite unique constraint exists for offer_id and product_id
-                            data: { product: { connect: { product_id } } },
-
-                        }))
+                        deleteMany: {},
+                        create: req.body.product_ids.map(product_id => ({ product: { connect: { product_id } } }))
                     }
-                    : {
-                        deleteMany: {} // If you want to clear out the product relationships when no product_ids are passed
+                    : 
+                    {
+                         // If you want to clear out the product relationships when no product_ids are passed
                     },
 
             }
         })
+   
         return res.json({ success: true, status: 200, message: 'Offer updated successfully' })
     } catch (error) {
         console.log('Admin update offer controller error: ', error);
