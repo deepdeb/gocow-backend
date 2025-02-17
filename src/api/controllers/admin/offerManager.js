@@ -73,19 +73,40 @@ exports.adminUpdateOffer = async (req, res) => {
                     ? {
                         update: req.body.product_ids.map(product_id => ({
                             where: { offer_id_product_id: { offer_id: req.body.offer_id, product_id } }, // Assuming a composite unique constraint exists for offer_id and product_id
-                            data: {product: { connect: { product_id } }},
-                            
+                            data: { product: { connect: { product_id } } },
+
                         }))
                     }
                     : {
                         deleteMany: {} // If you want to clear out the product relationships when no product_ids are passed
                     },
-           
-        }
+
+            }
         })
-    return res.json({ success: true, status: 200, message: 'Offer updated successfully' })
-} catch (error) {
-    console.log('Admin update offer controller error: ', error);
-    return res.json({ success: false, status: 400, message: error })
+        return res.json({ success: true, status: 200, message: 'Offer updated successfully' })
+    } catch (error) {
+        console.log('Admin update offer controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
 }
+
+exports.adminUpdateOfferStatus = async (req, res) => {
+    try {
+
+        // console.log('req body', req.body)
+
+        let update_offer_status = await prisma.offer.update({
+            where: {
+                offer_id: req.body.offer_id,
+            },
+            data: {
+                is_active: req.body.status
+            }
+        })
+        
+        return res.json({ success: true, status: 200, message: 'Offer status updated successfully'})
+    } catch (error) {
+        console.log('Admin update offer status controller error: ', error);
+        return res.json({ success: false, status: 400, message: error })
+    }
 }
