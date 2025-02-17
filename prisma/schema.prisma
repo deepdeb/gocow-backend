@@ -186,4 +186,5 @@ model offer_product {
   offer       offer   @relation(fields: [offer_id], references: [offer_id], onDelete: Cascade)
   product_id  Int
   product     product @relation(fields: [product_id], references: [product_id], onDelete: Cascade)
+  @@unique([offer_id, product_id])
 }
