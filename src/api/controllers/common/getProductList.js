@@ -16,15 +16,15 @@ exports.getProductListAdminController = async (req, res) => {
     }
 }
 
-exports.getProductListCustomerController = async (req, res) => {
-    try {
-        let productList = await prisma.$queryRaw`select pl.product_id, pl.product_name, pl.catch_phrase, pl.product_image, pl.product_description, pl.price, pl.availability, pl.unit, pl.package, o.offer_type, o.offer_amount, pl.price - (pl.price * (o.offer_amount / 100)) as final_price, (pl.price * (o.offer_amount / 100)) as difference from product as pl left join offers as o on o.product_id = pl.product_id where pl.is_deleted = 0`
-        return res.json({ success: true, status: 200, message: res.message, products: productList })
-    } catch (error) {
-        console.log('Get product list customer controller error: ', error);
-        return res.json({ success: false, status: 400, message: error, products: [] })
-    }
-}
+// exports.getProductListCustomerController = async (req, res) => {
+//     try {
+//         let productList = await prisma.$queryRaw`select pl.product_id, pl.product_name, pl.catch_phrase, pl.product_image, pl.product_description, pl.price, pl.availability, pl.unit, pl.package, o.type, o.discount_value, pl.price - (pl.price * (o.discount_value / 100)) as final_price, (pl.price * (o.discount_value / 100)) as difference from product as pl left join offer as o on o.product_id = pl.product_id where pl.is_deleted = 0`
+//         return res.json({ success: true, status: 200, message: res.message, products: productList })
+//     } catch (error) {
+//         console.log('Get product list customer controller error: ', error);
+//         return res.json({ success: false, status: 400, message: error, products: [] })
+//     }
+// }
 
 exports.getProductListAdminWithSearch = async (req, res) => {
     try {
@@ -55,6 +55,43 @@ exports.getProductListAdminWithSearch = async (req, res) => {
         return res.json({ success: true, status: 200, products: productList })
     } catch (error) {
         console.log('Get product list with search controller error: ', error);
+        return res.json({ success: false, status: 400, message: error, products: [] })
+    }
+}
+
+exports.getProductListCustomerController = async (req, res) => {
+
+    try {
+        let productList = await prisma.product.findMany({
+
+            where: {
+                is_deleted: false
+            },
+            include: {
+                offer_product: {
+                    include: {
+                        offer: {
+                            omit: {
+                                created_at: true,
+                                updated_at: true,
+                                admin_id: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        const filteredProducts = productList.map(product => ({
+            ...product,
+            offer_product: product.offer_product.filter(op =>
+              op.offer.is_active 
+            ),
+          }));
+
+        return res.json({ success: true, status: 200, message: res.message, products: filteredProducts })
+    } catch (error) {
+        console.log('Get product list customer controller error: ', error);
         return res.json({ success: false, status: 400, message: error, products: [] })
     }
 }
