@@ -53,7 +53,7 @@ exports.adminGetOffer = async (req, res) => {
 
 exports.adminUpdateOffer = async (req, res) => {
     try {
-        //console.log('req body>>>', req.body)
+        console.log('req body>>>', req.body)
 
         let admin_update_offer = await prisma.offer.update({
             where: {
@@ -65,8 +65,8 @@ exports.adminUpdateOffer = async (req, res) => {
                 category: req.body.offerCategory,
                 discount_type: req.body.offerDisc,
                 discount_value: req.body.discount_value,
-                buy_quantity: req.body.offerCategory === "BUY_N_GET_X" ? req.body.buy_quantity : undefined,
-                get_quantity: req.body.offerCategory === "BUY_N_GET_X" ? req.body.get_quantity : undefined,
+                buy_quantity: req.body.buy_quantity,
+                get_quantity: req.body.get_quantity,
                 from_date: req.body.startDate ? req.body.startDate : undefined,
                 to_date: req.body.endDate ? req.body.endDate : undefined,
                 offer_products: req.body.offerType === "PRODUCT" && req.body.product_ids && req.body.product_ids.length > 0
