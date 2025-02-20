@@ -79,6 +79,12 @@ exports.getProductListCustomerController = async (req, res) => {
                         }
                     }
                 }
+            },
+            omit:{
+                created_at:true,
+                created_by:true,
+                updated_at:true,
+                updated_by:true,
             }
         })
 
