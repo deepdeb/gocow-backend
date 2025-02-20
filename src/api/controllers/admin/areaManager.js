@@ -41,6 +41,9 @@ exports.getActiveArea = async (req, res) => {
         let activeAreas = await prisma.active_area.findMany({
             include: {
                 admin: true
+            },
+            orderBy: {
+                active_area_id: 'desc'
             }
         })
         return res.json({ success: true, status: 200, data: activeAreas })
