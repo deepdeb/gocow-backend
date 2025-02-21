@@ -93,7 +93,36 @@ exports.updateLocality = async (req, res) => {
 
 exports.searchLocality = async (req, res) => {
     try {
+        // console.log('locality req body>>>', req.body)
         // console.log('locality search term>>>', req.body.search_term);
+        // console.log('locality start date>>>', req.body.from_date);
+        // console.log('locality end date>>>', req.body.to_date);
+
+        let whereCondition = {
+            OR: [
+                {
+                    locality_name: {
+                        contains: req.body.search_term
+                    }
+                },
+                {
+                    pincode: {
+                        contains: req.body.search_term
+                    }
+                }
+            ]
+        }
+
+        if (req.body.to_date && req.body.from_date) {
+            whereCondition.AND = [
+                {
+                    createdAt: {
+                        lte: new Date(req.body.to_date).toISOString(),
+                        gte: new Date(req.body.from_date).toISOString()
+                    }
+                }
+            ]
+        }
 
         let locality_list = await prisma.active_area.findMany({
             include: {
@@ -102,20 +131,7 @@ exports.searchLocality = async (req, res) => {
             orderBy: {
                 active_area_id: 'desc'
             },
-            where: {
-                OR: [
-                    {
-                        locality_name: {
-                            contains: req.body.search_term
-                        }
-                    },
-                    {
-                        pincode: {
-                            contains: req.body.search_term
-                        }
-                    }
-                ]
-            }
+            where: whereCondition
         })
 
         return res.json({ success: true, status: 200, localityList: locality_list })
