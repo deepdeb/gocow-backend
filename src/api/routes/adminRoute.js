@@ -4,7 +4,7 @@ const { adminLoginController } = require('../controllers/admin/adminLogin');
 const { adminCreateProductController, adminUpdateProductController, adminDeleteProductController, generateProductReport } = require('../controllers/admin/adminProductCrud');
 const {deliveryPersonList, assignDeliveryPerson, addDeliveryPerson, updateDeliveryPerson,toggleDeliveryPersonStatus, searchDeliveryPerson } = require('../controllers/admin/deliveryPersonController');
 const { adminReadCustomer, generateCustomerReport, searchCustomer } = require('../controllers/admin/customerManager');
-const { adminAddActiveArea, getActiveArea, toggleActiveArea, updateLocality } = require('../controllers/admin/areaManager');
+const { adminAddActiveArea, getActiveArea, toggleActiveArea, updateLocality, searchLocality } = require('../controllers/admin/areaManager');
 const { generateOrderReport, adminSearchOrder, setOrderStatus } = require('../controllers/common/salesOrder');
 const authenticateToken = require('../middleware/authenticateTokenAdmin')
 const multer = require('multer');
@@ -71,3 +71,4 @@ router.get('/adminGetOfferList', authenticateToken, adminGetOffer)
 router.post('/updateLocality', updateLocality)
 router.post('/updateOffer', adminUpdateOffer)
 router.post('/updateOfferStatus', adminUpdateOfferStatus)
+router.post('/searchLocality', searchLocality)
